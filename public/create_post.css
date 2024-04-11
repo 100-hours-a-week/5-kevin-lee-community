@@ -1,0 +1,121 @@
+body {
+    width: 1920px;
+    height: 1080px;   
+
+}
+.header{
+    width: 100%;
+    height: 32px;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    
+}
+.header_title{
+    width: 206px;
+    height: 32px;
+    font-weight: 400;
+    font-size: 32px;
+    white-space: nowrap;
+}
+.navbar_logo{
+    height: 32px;
+    font-size: 32px;
+    font-weight: 600;
+}
+.profile_img{
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
+}
+.horizontal-rule {
+    width: 100%;
+    height: 1px;
+    margin: 30px auto;
+    margin-bottom: 0px;
+}
+.category{
+    font-weight: 700;
+    font-size: 24px;
+    text-align: center;
+}
+.wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title_category{
+    height: 100px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.title{
+    font-weight: 700;
+    font-size: 16px;
+    
+}
+.title_input{
+    padding-left: 10px;
+    width: 570px;
+    height: 50px;
+    border: 1px solid;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: left;
+    
+    line-height: 50px;
+
+}
+.content_category{
+    width: 570px;
+}
+.content{
+    font-weight: 700;
+    font-size: 16px;
+}
+.content_input{
+    padding-left: 10px;
+    width: 570px;
+    height: 270px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: left;
+    line-height: 50px;
+}
+.img_category{
+    height: 100%;
+    width: 570px;
+    
+}
+.img_title{
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 0px;
+}
+.file_category{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+.file_btn{
+    height: 24px;
+}
+.file_txt{
+    font-size: 14px;
+}
+.complete{
+    width: 355px;
+    height: 33px;
+    border-radius: 4px;
+    background-color: #ACADEB;
+    color: white;
+    border: 0;
+}

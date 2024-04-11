@@ -1,0 +1,100 @@
+body {
+    width: 1920px;
+    height: 1080px;   
+
+}
+.header{
+    width: 100%;
+    height: 32px;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.navbar_logo{
+    width: 10.93px;
+    height: 32px;
+    font-size: 50px;
+}
+.title{
+    width: 206px;
+    height:32px;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 32px;
+    white-space: nowrap;
+}
+.wrap{
+    width: 100%;
+    margin-top: 233px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.signup{
+    width: 111px;
+    height: 38px;
+    font: Pretendard;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38.19px;
+    white-space: nowrap;
+}
+.profile{
+    width: 400px;
+    height: 263px;
+}
+.insert_img{
+    width: 149px;
+    height: 149px;
+}
+.profile_txt{
+    width: 69px;
+    height: 18px;
+    margin-top: 10px;
+    margin-left: 10px;
+    white-space: nowrap;
+    font: Pretendard;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 17.9px;
+}
+.typeTxt{
+    font: Pretendard;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 17.9px;
+    text-align: left;
+}
+.input{
+    width: 355px;
+    height: 33px;
+    font: Pretendard;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 33px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-align: left;
+}
+.signup_btn{
+    margin-top: 30px;
+    width: 355px;
+    height: 33px;
+    font: Pretendard;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 33px;
+    background-color: #aca0eb;
+    color: white;
+    border-radius: 4px;
+}
+.login_btn{
+    width: 120px;
+    height: 17px;
+    font-weight: 400;
+    font-size: 14px;
+
+}

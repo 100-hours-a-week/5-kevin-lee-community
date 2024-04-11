@@ -1,0 +1,101 @@
+body {
+    width: 1920px;
+    height: 1080px;   
+
+}
+.header{
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.navbar_logo{
+    width: 10.93px;
+    height: 32px;
+    font-size: 50px;
+}
+.title{
+    width: 206px;
+    height:32px;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 32px;
+    white-space: nowrap;
+}
+.profile_img{
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
+}
+.wrap{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.horizontal-rule1 {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 0px;
+}
+.title_category{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 30px;
+}
+.post_correct{
+    width: 570px;
+    text-align: left;
+}
+.post_correct_title{
+    height: 30px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.post_correct_titleInput{
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: 700;
+}
+.post_correct_content{
+    font-size: 16px;
+    font-weight: 700;
+    height: 30px;
+    line-height: 30px;
+}
+.post_correct_contentInput{
+    font-size: 15px;
+    font-weight: 400;
+}
+post_correct_img_category{
+    padding: 10px;
+}    
+.post_correct_img_title{
+    font-size: 15px;
+    font-weight: 700;
+}
+.post_correct_img_input_category{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.post_correct_img_btn{
+    width: 80px;
+    height: 29px;
+}
+.post_correct_img_txt{
+    font-size: 14px;
+}
+.post_correct_img_correctBtn{
+    width: 355px;
+    height: 33px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #7f6aee;
+    color: white;
+}
