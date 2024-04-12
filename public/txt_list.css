@@ -25,6 +25,8 @@ body {
 .profile_img{
     width: 32px;
     height: 32px;
+    border-radius: 50%;
+
 }
 .wrap{
     display: flex;

@@ -45,10 +45,13 @@ body {
 .profile{
     width: 400px;
     height: 263px;
+    border-radius: 50%;
+
 }
 .insert_img{
     width: 149px;
     height: 149px;
+    border-radius: 50%;
 }
 .profile_txt{
     width: 69px;

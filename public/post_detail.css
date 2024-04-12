@@ -28,6 +28,8 @@ body {
     width: 32px;
     height: 32px;
     margin-top: 16px;
+    border-radius: 50%;
+
 }
 .wrap{
     width: 100%;
