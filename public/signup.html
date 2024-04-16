@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="header">
-        <div class="navbar_logo"><</div>
+        <div id="navbar_logo"><</div>
         <p class="title">아무 말 대잔치</p>
         <div class="blank1"></div>
     </header>
@@ -17,20 +17,30 @@
         <p class="signup">회원가입</p>
         <div class="profile">
             <p class="profile_txt">프로필 사진</p>
-            <img class="insert_img" src="/img/insert_img.png" />
+            <p id="porfileImg_helper" class="helper_text">* helper</p>
+            <input type="file" id="file_input" accept="image/*" style="display: none;">
+            <label for="file_input">
+                <img id="insert_img" src="/public/img/insert_img.png" />
+            </label>
         </div>
-        <div class="typingArea">
+        <form  class="typingArea">
             <p class="typeTxt" id="email">이메일</p>
-            <form class="input" id="eInput">이메일을 입력하세요</form>
+            <input class="input" type="email" id="eInput" placeholder="이메일을 입력하세요"></input>
+            <p id="email_helper"class="helper_text">* helper</p>
             <p class="typeTxt" id="pw">비밀번호</p>
-            <form class="input" id="pInput">비밀번호를 입력하세요</form>
+            <input class="input" type="password" id="pInput" placeholder="비밀번호를 입력하세요"></input>
+            <p id="pw_helper"class="helper_text">* helper</p>
             <p class="typeTxt" id="rePw">비밀번호 확인</p>
-            <form class="input" id="rpInput">비밀번호를 한번 더입력하세요</form>
-            <p class="typeTxt" id="nickName">닉네임</p>
-            <form class="input" id="nInput">닉네임을 입력하세요</form>
-            <div class="signup_btn">회원가입</div>
-        </div>
-        <div class="login_btn">로그인하러 가기</div>
+            <input class="input" type="password" id="rpInput" placeholder="비밀번호를 한번 더입력하세요"></input>
+            <p id="rePw_helper"class="helper_text">* helper</p>
+            <p class="typeTxt"  id="nickName">닉네임</p>
+            <input class="input" type="text" id="nInput" placeholder="닉네임을 입력하세요"></input>
+            <p id="nickname_helper"class="helper_text">* helper</p>
+            <button type="submit" class="signup_btn">회원가입</button>
+        </form>
+        <button id="login_btn">로그인하러 가기</button>
     </section>
+
+    <script src="signup.js"></script>
 </body>
 </html>

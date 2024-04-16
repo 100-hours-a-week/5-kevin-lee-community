@@ -8,18 +8,27 @@
     <title>로그인</title>
 </head>
 <body>
+
     <header class="header">
         <p class="title">아무 말 대잔치</p>
     </header>
     <section class="wrap">
         <div class="login">로그인</div>
-        <p class="email">이메일</p>
-        <form class="email_input">이메일을 입력하세요</form>
-        <p class="pw">비밀번호</p>
-        <form class="pw_input">비밀번호를 입력하세요</form>
-        <p class="login_btn">로그인</p>
-        <p class="signup">회원가입</p>
+        <form class="input"> 
+            <p class="email">이메일</p>
+            <input id="email_input" type="email" placeholder="이메일을 입력하세요"></input>
+            <p class="pw">비밀번호</p>
+            <input id="pw_input" type="password" placeholder="비밀번호를 입력하세요"></input>
+            <p id="helper_text">helper text</p>
+        </form>
+        <div class="btn">
+            <button id="login_btn">로그인</p>
+            <button id="signup">회원가입</button>
+        </div>
+        
     </section>
+
+    <script src="login.js"></script>
 
 </body>
 </html>
