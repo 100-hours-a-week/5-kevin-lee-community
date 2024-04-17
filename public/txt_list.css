@@ -47,10 +47,11 @@ body {
     margin: 0 auto;
     width: 592px;
 }
-.postCreate{
+#postCreate{
     float: right;
     width: 138px;
     height: 39px;
+    border: 0px;
     border-radius: 16px;
     background-color: #aca0eb;
     line-height: 39px;
