@@ -21,10 +21,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // DOMContentLoaded 이벤트가 발생하면 실행될 코드
     const titles = document.getElementsByClassName('post_title');
     for(let i = 0; i < titles.length; i++){
-      let title = titles[i];
-      console.log(title)
-      title = title.inner
-      titles[i].textContent = title;
+      let title = titles[i].innerText;
+      title = title.slice(0, 26);
+      titles[i].innerText = title;
     }
   });
 
