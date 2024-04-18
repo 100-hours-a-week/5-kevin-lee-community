@@ -12,7 +12,7 @@ let eliPw = false;
 let eliRPw = false;
 let eliNick = false;
 
-document.getElementById('navbar_logo').addEventListener('click', function(){
+document.getElementById('navigate_icon').addEventListener('click', function(){
     go_login();
 });
 document.getElementById('login_btn').addEventListener('click', function(){

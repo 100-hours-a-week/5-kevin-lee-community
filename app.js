@@ -20,8 +20,8 @@ app.get('/login', (req, res) => {
 app.get('/clientinfo_alter', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clientinfo_alter.html'));
 });
-app.get('/create_post', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'create_post.html'));
+app.get('/post_create', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'post_create.html'));
 });
 app.get('/post_correct', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'post_correct.html'));
