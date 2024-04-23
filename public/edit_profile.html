@@ -30,20 +30,36 @@
             <img class="alter_img" src="/img/profile_img.jpg"/>
         </div>
         <div class="clientInfo_category">
-            <div class="email_category">
+            <form class="email_category">
                 <p class="email_title">이메일</p>
-                <p class="email_confirm">startupcode@gmail.com</p>
-            </div>
-            <div class="nickname_category">
+                <input placeholder="startupcode@gmail.com" id="email_input"></input>
+            </form>
+            <form class="nickname_category">
                 <p class="nickname_title">닉네임</p>
-                <form class="nickname_input">스타트업코드</form>
-            </div>
+                <input placeholder="스타트업코드" id="nickname_input"></input>
+            </form>
         </div>
-        <button class="correction">수정하기</button>
-        <button class="withdrawl">회원탈퇴</button>
-        <button class="correction_complete">수정완료</button>
+        <div id="helper_text_div">
+            <p id="helper_text">helper text</p>
+        </div>
+        <button id="correction">수정하기</button>
+        <button id="withdrawl">회원탈퇴</button>
+        <button id="correction_complete">수정완료</button>
     </section>
 
+    <div id="tost_message">수정 완료</div>
+    <div id="modal_container" class="hidden">
+        <div class="modal">
+            <div class="modal_body">
+                <div><p class="modal_intro1">회원탈퇴 하시겠습니까?</p></div>
+                <div><p class="modal_intro2">작성된 게시글과 댓글을 삭제됩니다.</p></div>
+                <div class="modal_btn">
+                    <button id="modal_cancel">취소</button>
+                    <button id="modal_confirm">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="edit_profile.js"></script>
 </body>
 </html>

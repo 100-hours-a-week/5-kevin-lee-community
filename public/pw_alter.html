@@ -18,19 +18,22 @@
         <div class="title_category">
             비밀번호 수정
         </div>
-       <div class="alter_category">
+       <form class="alter_category">
             <div class="pw_category">
                 <p class="pw_title">비밀번호</p>
-                <form class="pw_input">비밀번호를 입력하세요</form>
+                <input type="password" placeholder="비밀번호를 입력하세요" id="pw_input"></input>
+                <p class="helper_text" id="helper_text_pw">helper_text</p>
             </div>
             <div class="rePw_category">
-                <div class="rePw_category">
-                    <p class="rePw_title">비밀번호 확인</p>
-                    <form class="rePw_input">비밀번호를 한번 더 입력하세요</form>
-                </div>
+                <p class="rePw_title">비밀번호 확인</p>
+                <input type="password" placeholder="비밀번호를 한번 더 입력하세요" id="rePw_input"></form>
+                <p class="helper_text" id="helper_text_rePw">helper_text</p>
             </div>
-       </div>
-       <button class="correction">수정하기</button>
+        </form>
+       <button id="correction">수정하기</button>
     </section>
+    <div id="tost_message">수정 완료</div>
+
+    <script src="pw_alter.js"></script>
 </body>
 </html>
