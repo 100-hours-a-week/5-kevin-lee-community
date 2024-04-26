@@ -53,19 +53,25 @@ body {
     font-size: 16px;
     font-weight: 700;
 }
-.post_correct_titleInput{
+#post_correct_titleInput{
+    width: 570px;
     height: 30px;
     line-height: 30px;
     font-size: 16px;
     font-weight: 700;
+    border: 0px;
 }
-.post_correct_content{
+#post_correct_content{
+    text-align: left;
+    margin: 10px;
     font-size: 16px;
     font-weight: 700;
     height: 30px;
     line-height: 30px;
 }
-.post_correct_contentInput{
+#post_correct_contentInput{
+    width: 570px;
+    height: 260px;
     font-size: 15px;
     font-weight: 400;
 }
@@ -82,14 +88,14 @@ post_correct_img_category{
     gap: 10px;
     align-items: center;
 }
-.post_correct_img_btn{
+#post_correct_img_btn{
     width: 80px;
     height: 29px;
 }
 .post_correct_img_txt{
     font-size: 14px;
 }
-.post_correct_img_correctBtn{
+#post_correct_img_correctBtn{
     width: 355px;
     height: 33px;
     border: 0;

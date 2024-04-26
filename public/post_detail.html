@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="header">
-        <img class= "navigate_icon" src="/img/navigate_before.svg"></img>
+        <img id= "navigate_icon" src="/img/navigate_before.svg"></img>
         <p class="title">아무 말 대잔치</p>
         <img class="profile_img" src="/img/profile_img.jpg"/>
     </header>
@@ -25,8 +25,8 @@
             <div class="post_creator_name">더미 작성자 1</div>
             <div class="post_creator_date">2021-01-01 00:00:00</div>
             <div class="post_creator_modifi">
-                <button class="post_creator_correction">수정</button>
-                <button class="post_creator_delete">삭제</button>
+                <button id="post_creator_correction">수정</button>
+                <button id="post_creator_delete">삭제</button>
             </div>
         </div>
         <hr class="horizontal-rule2"/>
@@ -49,18 +49,22 @@
                 새로운 경험을 즐기고 항상 앞으로 나아가는 것이 중요하다고 생각합니다.
             </div>
             <div class="post_body_cnt">
-                <button class="post_body_btn">123<br>조회수</button>
-                <button class="post_body_btn">123<br>댓글</button>
+                <div class="post_body_hits">
+                    <p id="hits_cnt">10000000</p>
+                    <p class="hits_intro">조회수</p>
+                </div>
+                <div class="post_body_commants">
+                    <p id="commants_cnt">1000</p>
+                    <p class="commants_intro">댓글</p>
+                </div>
             </div>
         </div>
         <hr class="horizontal-rule2"/>
-        <div class="comments_category">
-            <form class="comments_input">
-                댓글을 남겨주세요!
-            </form>
+        <form class="comments_category">
+            <textarea placeholder="댓글을 남겨주세요!" id="comments_input"></textarea>
             <hr class="horizontal-rule1/">
-            <button class="comments_btn">댓글 등록</button>
-        </div>
+            <button id="comments_btn" disabled>댓글 등록</button>
+        </form>
         <div class="comments_list_category">
             <div class="comments_list1">
                 <div class="comments_list1_img"></div>
@@ -68,14 +72,14 @@
                     <p class="comments_list1_creator_name">
                         더미 작성자1
                     </p>
-                    <p class="comments_list1_creator_content">
+                    <p id="comments_list1_creator_content">
                         댓글 내용
                     </p>
                 </div>
                 <div class="comments_list1_date">2021-01-01 00:00:00</div>
                 <div class="comments_list1_modifi">
-                    <button class="comments_list1_correctBtn">수정</button>
-                    <button class="comments_lsit1_deleteBtn">삭제</button>
+                    <button class="comment_correctBtn" id="comments_list1_correctBtn">수정</button>
+                    <button class="comment_deleteBtn" id="comments_lsit1_deleteBtn">삭제</button>
                 </div>
             </div>
 
@@ -105,5 +109,33 @@
             </div>
         </div>
     </section>
+
+    <div id="postDelete_container" class="hidden">
+        <div class="modal">
+            <div class="modal_body">
+                <div><p class="modal_intro1">회원탈퇴 하시겠습니까?</p></div>
+                <div><p class="modal_intro2">작성된 게시글과 댓글을 삭제됩니다.</p></div>
+                <div class="modal_btn">
+                    <button id="postDelete_cancel">취소</button>
+                    <button id="postDelete_confirm">확인</button>
+                </div>
+            </div>
+        </div>    
+    </div>
+    
+    <div id="commantDelete_container" class="hidden">
+        <div class="modal">
+            <div class="modal_body">
+                <div><p class="modal_intro1">회원탈퇴 하시겠습니까?</p></div>
+                <div><p class="modal_intro2">작성된 게시글과 댓글을 삭제됩니다.</p></div>
+                <div class="modal_btn">
+                    <button id="commantDelete_cancel">취소</button>
+                    <button id="commantDelete_confirm">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="post_detail.js"></script>
 </body>
 </html>
