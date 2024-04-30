@@ -15,29 +15,29 @@
     </header>
     <section class="wrap">
         <p class="signup">회원가입</p>
-        <div class="profile">
-            <p class="profile_txt">프로필 사진</p>
-            <p id="porfileImg_helper" class="helper_text">* helper</p>
-            <input type="file" id="file_input" accept="image/*" style="display: none;">
-            <label for="file_input">
-                <img id="insert_img" src="/img/insert_img.png" />
-            </label>
-        </div>
-        <form  class="typingArea">
+        <form  class="typingArea" id="input_submit">
+            <div class="profile">
+                <p class="profile_txt">프로필 사진</p>
+                <p id="porfileImg_helper" class="helper_text">* helper</p>
+                <input type="file" id="file_input" accept="image/*" style="display: none;">
+                <label for="file_input">
+                    <img id="insert_img" src="/img/insert_img.png" />
+                </label>
+            </div>
             <p class="typeTxt" id="email">이메일</p>
-            <input class="input" type="email" id="eInput" placeholder="이메일을 입력하세요"></input>
+            <input class="input" autocomplete="off" type="email" id="eInput" placeholder="이메일을 입력하세요"></input>
             <p id="email_helper"class="helper_text">* helper</p>
             <p class="typeTxt" id="pw">비밀번호</p>
-            <input class="input" type="password" id="pInput" placeholder="비밀번호를 입력하세요"></input>
+            <input class="input" autocomplete="off" type="password" id="pInput" placeholder="비밀번호를 입력하세요"></input>
             <p id="pw_helper"class="helper_text">* helper</p>
             <p class="typeTxt" id="rePw">비밀번호 확인</p>
-            <input class="input" type="password" id="rpInput" placeholder="비밀번호를 한번 더입력하세요"></input>
+            <input class="input" autocomplete="off" type="password" id="rpInput" placeholder="비밀번호를 한번 더입력하세요"></input>
             <p id="rePw_helper"class="helper_text">* helper</p>
             <p class="typeTxt"  id="nickName">닉네임</p>
             <input class="input" type="text" id="nInput" placeholder="닉네임을 입력하세요"></input>
             <p id="nickname_helper"class="helper_text">* helper</p>
-            <button type="submit" class="signup_btn">회원가입</button>
         </form>
+        <input type="submit" id="signup_btn">회원가입</input>
         <button id="login_btn">로그인하러 가기</button>
     </section>
 

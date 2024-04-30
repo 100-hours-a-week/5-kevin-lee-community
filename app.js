@@ -11,6 +11,12 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+// app.use(express.json())
+// app.post('addData', (req, res) => {
+//   const newData = req.body;
+//   fs.
+// })
+
 
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -42,3 +48,4 @@ app.get('/txt_list', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+

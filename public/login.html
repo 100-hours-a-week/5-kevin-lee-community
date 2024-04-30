@@ -14,15 +14,15 @@
     </header>
     <section class="wrap">
         <div class="login">로그인</div>
-        <form class="input"> 
+        <form class="input" id="input_submit"> 
             <p class="email">이메일</p>
-            <input id="email_input" type="email" placeholder="이메일을 입력하세요"></input>
+            <input id="email_input" autocomplete="off" type="email" placeholder="이메일을 입력하세요"></input>
             <p class="pw">비밀번호</p>
-            <input id="pw_input" type="password" placeholder="비밀번호를 입력하세요"></input>
+            <input id="pw_input" autocomplete="off" type="password" placeholder="비밀번호를 입력하세요"></input>
             <p id="helper_text">helper text</p>
         </form>
         <div class="btn">
-            <button id="login_btn">로그인</p>
+            <button id="login_btn">로그인</button>
             <button id="signup">회원가입</button>
         </div>
         

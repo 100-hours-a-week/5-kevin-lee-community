@@ -18,7 +18,7 @@ document.getElementById('comments_btn').addEventListener('click', function(){
         //댓글 수정 기능. 
         //target 본문에 comments_input에 입력한 내용 대입
         //애는 DOM트리만 변경. 파일 내용은 변경되지 않음.
-        //fetch를 써서 구혀할 것.
+        //3번 과제 진행시, 수정.
         document.getElementById(comment_target).innerText = document.getElementById('comments_input').value;
         document.getElementById('comments_input').value = "";
 
@@ -109,6 +109,7 @@ function correct_comment(){
 }
 
 //댓글 삭제 기능, 확인 버튼 미구현
+//3번 과제 진행시 수정
 function delete_comment(){
     comment_delete_modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';

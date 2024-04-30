@@ -4,8 +4,25 @@ document.getElementById('email_input').addEventListener('input', function() {
 document.getElementById('pw_input').addEventListener('input', function(){
     validatePw(this.value);
 });
-document.getElementById('login_btn').addEventListener('click', function(){
-    post_detail_go();
+document.getElementById('login_btn').addEventListener('click', function(event){
+    
+    let email = document.getElementById('email_input').value;
+    let pw = document.getElementById('pw_input').value;
+
+    fetch("/userInfo.json")
+    .then(response => response.json())
+    .then(data => {
+        let users = data.users;
+        let loggedInUser = users.find(user => user.email === email && user.password === pw);
+        
+        console.log(loggedInUser);
+
+        if(loggedInUser){
+            console.log("goal");
+            document.getElementById('input_submit').submit();
+            post_detail_go();
+        }
+    })
 });
 document.getElementById('signup').addEventListener('click', function(){
     go_sign();
@@ -39,6 +56,7 @@ function validatePw(pw){
     let eliNumber = /\d/.test(pwInput);
     let eliSpecialChar = /[!@#$%^&*()\-_=+{};:,<.>]/.test(pwInput);
     let eligible = false
+    let check = false;
 
     if(eliLength){
         eligible = true
@@ -51,8 +69,9 @@ function validatePw(pw){
         document.getElementById('helper_text').textContent = '비밀번호를 입력해주세요';
     }
     if(!eligible){
-        document.getElementById('helper_text').textContent = '비밀번호가 다릅니다.';
-    }else{
+        document.getElementById('helper_text').textContent = '비밀번호는 8자 이상, 20자 이하이며, 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개 포함해야 합니다.';
+    }
+    else{
         document.getElementById('helper_text').textContent = 'helper text';
     }
 

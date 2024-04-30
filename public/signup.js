@@ -1,11 +1,4 @@
-//look: 중복처리 기능 미완성 상태. fetch부분 너무 어려움. 
 
-
-const userInfoPath = "./public/userInfo.json";
-const eInput = document.getElementById('eInput');
-const pInput = document.getElementById('pInput');
-const rpInput = document.getElementById('rpInput');
-const nInput = document.getElementById('nInput');
 let pwInput;
 let eliEmail = false;
 let eliPw = false;
@@ -17,7 +10,7 @@ document.getElementById('navigate_icon').addEventListener('click', function(){
 });
 document.getElementById('login_btn').addEventListener('click', function(){
     go_login();
-})
+})  
 document.getElementById('file_input').addEventListener('change', function(event){
     const file = event.target.files[0];
 
@@ -34,63 +27,118 @@ document.getElementById('file_input').addEventListener('change', function(event)
     else {
         document.getElementById('insert_img').src="/public/img/insert_img.png" ;
     }
-})
+});
+document.getElementById('signup_btn').addEventListener('submit', async function(event){
+    event.preventDefault();
+
+    if(eliEmail && eliNick && eliPw && eliRPw){
+        const formData = new FormData(this);
+        const email = formData.get('eInput');
+        const password = formData.get('pInput');
+        const nickname = formData.get('nInput');
+
+        const data = {
+            email: email,
+            nickname: nickname,
+            password: password
+        };
+        
+        try{
+            const response = await fetch('/addData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify(data)
+            });
+            if(response.ok){
+                console.log("success")
+            }else{
+                console.error('failed to add data', response.statusText);
+            }
+        }catch(error){
+            console.error('error adding data : ', error);
+        }
+
+    }
+
+    window.location.href = "/login"
+});
+
+
+
 //포커스 아웃 핸들러 모음
-eInput.addEventListener('blur', validateEmail);
-pInput.addEventListener('blur', validatePw);
-rpInput.addEventListener('blur', validateRPW);
-nInput.addEventListener('blur', validateNick);
+let eInputChange = document.getElementById('eInput');
+let pInputChange = document.getElementById('pInput');
+let rpInputChange = document.getElementById('rpInput');
+let nInputChange = document.getElementById('nInput');
+eInputChange.addEventListener('change', validateEmail);
+pInputChange.addEventListener('change', validatePw);
+rpInputChange.addEventListener('change', validateRPW);
+nInputChange.addEventListener('change', validateNick);
 
 function go_login(){
     window.location.href = '/login';
 }
-function readJSONFIle(filePath){
-   return fetch(filePath)
-   .then(response => {
-    if(!response.ok){
-        throw new Error('Network response was not ok');
+
+async function EmailDup(comp) {
+    try {
+        const response = await fetch("/userInfo.json");
+        const data = await response.json();
+        const users = data.users;
+        return users.some(user => user.email === comp);
+    } catch (error) {
+        console.error('Error checking email duplication:', error);
+        throw error;
     }
-    return response.json();
-   })
-   .then(data => {
-    return data;
-   })
-   .catch(error =>{
-    console.error('error reading json file: ', error);
-   });
+}
+async function NickDup(comp) {
+    try {
+        const response = await fetch("/userInfo.json");
+        const data = await response.json();
+        const users = await data.users;
+        return users.some(user => user.nick === comp);
+    } catch (error) {
+        console.error('Error checking nick duplication:', error);
+        throw error;
+    }
 }
 
-function isDulicate(comp){
-    const userInfo = readJSONFIle(userInfoPath);
-    var isEmail = /\S+@\S+\.\S+/.test(comp);
-    var isNickname = !isEmail;
-
-    if(isNickname){
-        var isDupNickName = userInfo.some(userInfo => user.nickname === comp);
-        return isDupNickName;
+async function isDuplicate(comp, isEmail){
+    const userInfo = readJSONFIle("/userInfo.json");
+    
+    if(!isEmail){
+        let rst = await NickDup(comp);
+        return rst;
     }else if(isEmail){
-        var isDupEmail = userInfo.some(userInfo => user.email === comp);
-        return isDupEmail;
+        let rst = await EmailDup(comp);
+        return rst;
     }else{
-        return false
+        return false;
     }
-
 }
 
-function validateEmail() {
+async function validateEmail() {
     // 이메일 주소를 검증하는 정규식 패턴
     let email = document.getElementById('eInput').value;
-    console.log(email);
+    
+    let tmp = await isDuplicate(email, true);
+    console.log(tmp);
+
+ 
     if (email.length ==0 ){
         document.getElementById('email_helper').textContent = '이메일을 입력해주세요';
-    }else if (email.length < 5 ^ !email.includes('@')){
+        eliEmail = false;
+    }else if (email.length < 5 || !email.includes('@')){
         // 올바르지 않은 경우
         document.getElementById('email_helper').textContent = '올바른 이메일이 아닙니다.(예: example@example.com)';
-    }else if(isDulicate(email)){
+        eliEmail = false;
+    }else if(await isDuplicate(email, true)){
         document.getElementById('email_helper').textContent = '중복된 이메일입니다.';
-    }
-    else{
-        document.getElementById('email_helper').textContent = '이메일을 입력해주세요';
+        eliEmail = false;
+    }else{
+        document.getElementById('email_helper').textContent = '* helper';
+        eliEmail = true;
     }
 }
 function validatePw(input){
@@ -117,11 +165,14 @@ function validatePw(input){
 
     if (pw.length == 0){
         document.getElementById('pw_helper').textContent = '비밀번호를 입력해주세요';
+        eliPw = false;
     }
     if(!eligible){
+        eliPw = false;
         document.getElementById('pw_helper').textContent = '올바른 비밀번호가 아닙니다.';
     }else{
-        document.getElementById('pw_helper').textContent = '비밀번호를 입력해주세요';
+        document.getElementById('pw_helper').textContent = '* helper';
+        eliPw = true;
     }
 
     pwInput = pw;
@@ -131,12 +182,18 @@ function validateRPW(input){
 
     if(rpw.length == 0){
         document.getElementById('rePw_helper').textContent='비밀번호를 한번 더 입력해주세요';
+        eliPw = false
     }
     if(rpw != pwInput){
         document.getElementById('rePw_helper').textContent='비밀번호가 다릅니다.';
+        eliPw = false
+    }
+    else{
+        document.getElementById('rePw_helper').textContent='* helper';
+        eliPw = true;
     }
 }
-function validateNick(input){
+async function validateNick(input){
     let nickname = document.getElementById('nInput').value;
     let eligible = false
 
@@ -146,12 +203,19 @@ function validateNick(input){
 
     if(nickname.length == 0){
         document.getElementById('nickname_helper').textContent='닉네임을 입력해주세요';
+        eliNick = false;
     }else if(nickname.indexOf(' ') !== -1){
         document.getElementById('nickname_helper').textContent='띄어쓰기를 없애주세요';
+        eliNick = false;
     }else if(nickname.length > 10){
         document.getElementById('nickname_helper').textContent='닉네임은 최대 10자 까지 작성 가능합니다.';
-    }else if(isDulicate(nickname)){
-        document.getElementById('nickname_herlper').textContent='중복된 닉네임입니다.';
+        eliNick = false;
+    }else if(await isDuplicate(nickname, false)){
+        document.getElementById('nickname_helper').textContent='중복된 닉네임입니다.';
+        eliNick = false;
+    }else{
+        document.getElementById('nickname_helper').textContent='* helper';
+        eliNick = true;
     }
 
 }
