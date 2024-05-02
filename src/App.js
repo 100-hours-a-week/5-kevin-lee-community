@@ -1,24 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
-
+import Name from "./Components/Name"
+import Index from "./Pages/index"
+import Counter from "./Components/Counter"
 function App() {
+  const name = "Anger";
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className='App'>
+      {/* <Index name={name} age={30} children = {0}></Index> */}
+      <Counter></Counter>
+    </div>    
   );
 }
 
