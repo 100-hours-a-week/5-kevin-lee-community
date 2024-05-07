@@ -1,15 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
-import Name from "./Components/Name"
-import Index from "./Pages/index"
-import Counter from "./Components/Counter"
+import Login from './Pages/Login';
+import Signin from './Pages/Signin';
 function App() {
-  const name = "Anger";
   
   return (
     <div className='App'>
-      {/* <Index name={name} age={30} children = {0}></Index> */}
-      <Counter></Counter>
+      <Signin/>
     </div>    
   );
 }

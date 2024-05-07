@@ -1,0 +1,19 @@
+.profile{
+    width: 400px;
+    margin: 0 auto;
+}
+.profile_text{
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+}
+.helper_text{
+    text-align: left;
+    color: red;
+    font-size: 12px;
+}
+#insert_img{
+    width: 149px;
+    height: 149px;
+    border-radius: 50%;
+}

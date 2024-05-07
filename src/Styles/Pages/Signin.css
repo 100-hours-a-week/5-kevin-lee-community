@@ -1,0 +1,17 @@
+.signin_title{
+    margin-top: 161px;
+}
+.profile_input{
+    margin: 0 auto;
+}
+#signin_btn{
+    width: 355px;
+    background-color: #aca0eb;
+    height: 33px;
+    line-height: 33px;
+    border: 0px;
+    border-radius: 4px;
+}
+#signin_btn::placeholder{
+    color: white;
+}

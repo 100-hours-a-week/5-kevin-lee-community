@@ -1,0 +1,10 @@
+.pw_input_frame{
+    width: 392px;
+    text-align: left;
+    margin: 0 auto;
+}
+.pw_input{
+    width: 355px;
+    height: 33px;
+    border-radius: 4px;
+}
