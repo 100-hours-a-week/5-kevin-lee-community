@@ -22,34 +22,11 @@ function Counter(){
 
     return(
         <>
-        <h1>{count}</h1>
+        <h2>{count}</h2>
         <button onClick={increment}>+</button>
         <button onClick={decrement}>-</button>
     </>
     );
 }
-
-
-// function Counter() {
-// 	let count = 0;
-
-// 	function increaseCount() {
-// 		count += 1;
-// 		console.log(count);
-// 	}
-
-// 	function decreaseCount() {
-// 		count -= 1;
-// 		console.log(count);
-// 	}
-
-// 	return (
-// 		<div>
-// 			<button onClick={increaseCount}>+1</button>
-// 			<button onClick={decreaseCount}>-1</button>
-// 			<p>Count : {count}</p>
-// 		</div>
-// 	);
-// }
 
 export default Counter;
