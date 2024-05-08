@@ -1,4 +1,3 @@
-
 let pwInput;
 let eliEmail = false;
 let eliPw = false;
@@ -25,9 +24,12 @@ document.getElementById('file_input').addEventListener('change', function(event)
         reader.readAsDataURL(file);
     }
     else {
-        document.getElementById('insert_img').src="/public/img/insert_img.png" ;
+        document.getElementById('insert_img').src="/img/insert_img.png" ;
     }
 });
+document.getElementById('signup_btn').addEventListener('click', function(){
+    window.location.href = '/login';
+})
 document.getElementById('signup_btn').addEventListener('submit', async function(event){
     event.preventDefault();
 
@@ -67,6 +69,7 @@ document.getElementById('signup_btn').addEventListener('submit', async function(
 
 
 
+
 //포커스 아웃 핸들러 모음
 let eInputChange = document.getElementById('eInput');
 let pInputChange = document.getElementById('pInput');
@@ -93,11 +96,12 @@ async function EmailDup(comp) {
     }
 }
 async function NickDup(comp) {
+    
     try {
         const response = await fetch("/userInfo.json");
         const data = await response.json();
         const users = await data.users;
-        return users.some(user => user.nick === comp);
+        return users.some(user => user.nickname === comp);
     } catch (error) {
         console.error('Error checking nick duplication:', error);
         throw error;
@@ -105,7 +109,6 @@ async function NickDup(comp) {
 }
 
 async function isDuplicate(comp, isEmail){
-    const userInfo = readJSONFIle("/userInfo.json");
     
     if(!isEmail){
         let rst = await NickDup(comp);
@@ -121,10 +124,6 @@ async function isDuplicate(comp, isEmail){
 async function validateEmail() {
     // 이메일 주소를 검증하는 정규식 패턴
     let email = document.getElementById('eInput').value;
-    
-    let tmp = await isDuplicate(email, true);
-    console.log(tmp);
-
  
     if (email.length ==0 ){
         document.getElementById('email_helper').textContent = '이메일을 입력해주세요';
@@ -139,9 +138,10 @@ async function validateEmail() {
     }else{
         document.getElementById('email_helper').textContent = '* helper';
         eliEmail = true;
+        final_check();
     }
 }
-function validatePw(input){
+function validatePw(){
     //비밀번호 검사 지표
     let pw = document.getElementById('pInput').value;
     let eliLength = false;
@@ -173,33 +173,30 @@ function validatePw(input){
     }else{
         document.getElementById('pw_helper').textContent = '* helper';
         eliPw = true;
+        final_check();
     }
 
     pwInput = pw;
 }
-function validateRPW(input){
+function validateRPW(){
     let rpw = document.getElementById('rpInput').value;
 
     if(rpw.length == 0){
         document.getElementById('rePw_helper').textContent='비밀번호를 한번 더 입력해주세요';
-        eliPw = false
+        eliRPw = false
     }
     if(rpw != pwInput){
         document.getElementById('rePw_helper').textContent='비밀번호가 다릅니다.';
-        eliPw = false
+        eliRPw = false
     }
     else{
         document.getElementById('rePw_helper').textContent='* helper';
-        eliPw = true;
+        eliRPw = true;
+        final_check();
     }
 }
-async function validateNick(input){
+async function validateNick(){
     let nickname = document.getElementById('nInput').value;
-    let eligible = false
-
-    if(nickname.indexOf(' ') == -1 && nickname.length <= 10){
-        eligible = true   
-    }
 
     if(nickname.length == 0){
         document.getElementById('nickname_helper').textContent='닉네임을 입력해주세요';
@@ -216,7 +213,15 @@ async function validateNick(input){
     }else{
         document.getElementById('nickname_helper').textContent='* helper';
         eliNick = true;
+        final_check();
     }
-
 }
 
+function final_check(){
+    console.log(eliEmail, eliNick, eliPw, eliRPw)
+    if(eliEmail && eliNick && eliPw && eliRPw){
+        document.getElementById('signup_btn').style.backgroundColor = '#7f6aee'
+    }else{
+        document.getElementById('signup_btn').style.backgroundColor = '#aca0eb'
+    }
+}

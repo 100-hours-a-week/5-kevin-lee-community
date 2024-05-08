@@ -1,5 +1,7 @@
 
-
+document.getElementById('backward').addEventListener('click', function(){
+    window.location.href = "/txt_list"
+})
 //받기만 하고, 전송 기능 없음
 document.getElementById('image_input').addEventListener('change', function(event){
     const file = event.target.files[0];

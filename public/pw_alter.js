@@ -13,6 +13,9 @@ document.getElementById('correction').addEventListener('click', function(){
 })
 
 function validatePw(){
+    let correction_btn = document.getElementById('correction');
+
+
     //비밀번호 검사 지표
     let pwValue = document.getElementById('pw_input').value;
     let rePwValue = document.getElementById('rePw_input').value;
@@ -36,13 +39,21 @@ function validatePw(){
     }
  
     if (pwValue.length == 0){
+        correction_btn.style.backgroundColor = "#aca0eb";
+
         document.getElementById('helper_text_pw').innerHTML = '비밀번호를 입력해주세요';
     }else if(!eligible){
+        correction_btn.style.backgroundColor = "#aca0eb";
+
         document.getElementById('helper_text_pw').innerHTML = '*비밀번호는 8자 이상, 20자 이하이며, 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개 포함해야 합니다.';
     }else if(pwValue != rePwValue){
+        correction_btn.style.backgroundColor = "#aca0eb";
+
         document.getElementById('helper_text_pw').innerHTML = '비밀번호 확인과 다릅니다.';
     }
     else{
+        correction_btn.style.backgroundColor = "#aca0eb";
+
         document.getElementById('helper_text_pw').innerHTML = 'herlper text';
         document.getElementById('helper_text_rePw').innerHTML = 'herlper text';
         correction();
@@ -50,6 +61,9 @@ function validatePw(){
 }
 
 function validateRePw(){
+    let correction_btn = document.getElementById('correction');
+
+
     //비밀번호 검사 지표
     let pwValue = document.getElementById('pw_input').value;
     let rePwValue = document.getElementById('rePw_input').value;
@@ -73,7 +87,8 @@ function validateRePw(){
     }
  
     if (rePwValue.length == 0){
-         document.getElementById('helper_text_rePw').innerHTML = '비밀번호를 한번 더 입력해주세요';
+        correction_btn.style.backgroundColor = "#aca0eb";
+        document.getElementById('helper_text_rePw').innerHTML = '비밀번호를 한번 더 입력해주세요';
     }else if(!eligible){
          document.getElementById('helper_text_rePw').innerHTML = '*비밀번호는 8자 이상, 20자 이하이며, 대문자, 소문자, 숫자, 특수문자를 각각 최소 1개 포함해야 합니다.';
     }else if(pwValue != rePwValue){

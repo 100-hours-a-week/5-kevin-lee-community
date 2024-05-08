@@ -19,3 +19,7 @@ document.getElementById('post_correct_img_correctBtn').addEventListener('click',
 
     window.location.href = '/post_detail';
 })
+
+document.getElementById('backward').addEventListener('click', function(){
+    window.location.href = "/post_detail"
+})

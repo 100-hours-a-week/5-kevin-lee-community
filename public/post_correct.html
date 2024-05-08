@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" type="text/css" href="post_correct.css">
-    <title>회원가입</title>
+    <title>게시글 수정</title>
 </head>
 <body>
     <header class="header">
-        <img class= "navigate_icon" src="/img/navigate_before.svg"></img>
+        <img id="backward" class= "navigate_icon" src="/img/navigate_before.svg"></img>
         <p class="title">아무 말 대잔치</p>
         <img class="profile_img" src="/img/profile_img.jpg"/>
     </header>
@@ -19,7 +19,7 @@
         <form class="post_correct">
             <div class="post_correct_title">제목*</div>
             <hr class="horizontal-rule2"/>
-            <input placeholder="제목을 입력하세요" max="26" id="post_correct_titleInput"></input>
+            <input placeholder="제목을 입력하세요" maxlength="26" id="post_correct_titleInput"></input>
             <hr class="horizontal-rule2"/>
             <div id="post_correct_content">내용*</div>
             <hr class="horizontal-rule2"/>

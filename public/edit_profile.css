@@ -96,6 +96,7 @@ body {
 }
 #email_input{
     width: 450px;
+    height: 30px;
     border: 0px;
 }
 #nickname_input{

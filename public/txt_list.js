@@ -5,7 +5,7 @@ const posts = document.querySelectorAll('.post');
 
 post_create_btn.addEventListener('click', go_postCreate);
 function go_postCreate(){
-    window.location.href = '/create_post';
+    window.location.href = '/post_create';
 }
 posts.forEach(post => {
     post.addEventListener('click', function() {
