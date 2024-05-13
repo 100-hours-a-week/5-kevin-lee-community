@@ -17,7 +17,8 @@ userRoutes.post('/login', (req, res) => {
             res.status(200).send({"message": "login_success", "data" : rst[1]})
             break;
         case 400:
-            if(rst[1] == "email"){
+            // 동등 연산자를 사용하셔야 합니다.
+            if(rst[1] === "email"){
                 res.status(400).send({"message": "required_email", "data" : null});
             }else{
                 res.status(400).send({"message": "required_password", "data" : null});
