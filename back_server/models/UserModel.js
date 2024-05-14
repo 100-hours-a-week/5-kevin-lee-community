@@ -1,52 +1,36 @@
-import fs from "fs"
+const fs = require("fs");
+const path = require("path");
+
 class UserModel {
     constructor() {
         this.users = [];
-        this.loaded = false;
-        this.loadUsersPromise = this.loadUsers();
-        this.loadUsers();
+        const userInfoPath = path.join(__dirname,"..", "data",'userInfo.json');
+        const data = fs.readFileSync(userInfoPath, 'utf8');
+        this.users = JSON.parse(data).users;
+        
     }
-
-    // 사용자 데이터를 비동기적으로 로드
-    async loadUsers() {
-        return fs.promises.readFile('/models/userinfo.json', 'utf-8')
-        .then(data => {
-            this.users = JSON.parse(data);
-            this.loaded = true;
-        })
-        .catch(error => {
-            console.log("loadUsers error");
-        })
-    }
-
     // 사용자 인증 메소드
-    async authenticate(username, password) {
-        if(!this.loaded){
-            return this.loadUsersPromise.then(() => this.authenticate(username, password));
+    authenticate(email, password) {
+        if (!email) {
+            return [400, "email"];
+        } else if (!password) {
+            return [400, "password"];
         }
         
-        if(!username){
-            return ([400, "email", null]);
-        }else if(!password){
-            return ([400, "password", null]);
-        }
-
-        const rstEmail = this.users.find(user => user.username === username);
-        const rstPw = this.users.find(user => user.password === password);
-
-        const isEmail = rstEmail ? true : false;
-        const isPw = rstPw ? true : false;
         
-        const rst = users;
+        const user = this.users.find(user => user.email === email);
+            
 
-        if(isEmail && isPw){
-            return([200,"login_success" ,users]);
-        }else if(isEmail && !isPw){
-            return([401, "password", null])
-        }else if(!isEmail && isPw){
-            return([401,"email" ,null]);
+        if (user) {
+            if (user.password === password) {
+                return [200, "login_success", this.users];
+            } else {
+                return [401, "invalid_password"];
+            }
+        } else {
+            return [401, "invalid_email"];
         }
     }
 }
 
-export default UserModel;
+module.exports = UserModel;
