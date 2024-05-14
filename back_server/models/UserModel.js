@@ -30,7 +30,11 @@ class UserModel {
         } else {
             return [401, "invalid_email"];
         }
-    }
+
+ 
+    const rst = users;
+
+  }
 }
 
 module.exports = UserModel;
