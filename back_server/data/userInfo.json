@@ -1,28 +1,24 @@
 {
-    "users": [
-        {"userId":1, 
-        "email":"lky3004me@gmail.com", 
-        "nickname" : "lky3004me", 
-        "password":"Abc1234!!", 
-        "created_at": "2024-03-26T09:59:50.000Z",
-        "updated_at": "2024-03-26T09:59:50.000Z",
-        "deleted_at": null,
-        "auth_token": "pGGXsa6vaKs615CYO0GpJjcDpN6WUjQa"},
-        {"userId":2,
-        "email":"lky3004me@naver.com", 
-        "nickname" : "lky1004me", 
-        "password":"ABc7890!!", 
-        "created_at": "2024-03-26T09:59:50.000Z",
-        "updated_at": "2024-03-26T09:59:50.000Z",
-        "deleted_at": null,
-        "auth_token": "pGGXsa6vaKs615CYO0GpJjcDpN6WUjQa"},
-        {"userId":3,
-        "email":"abc@abc.com", 
-        "nickname" : "abc", 
-        "password":"Abc1234!!", 
-        "created_at": "2024-03-26T09:59:50.000Z",
-        "updated_at": "2024-03-26T09:59:50.000Z",
-        "deleted_at": null,
-        "auth_token": "pGGXsa6vaKs615CYO0GpJjcDpN6WUjQa"}
-    ]    
+  "users": [
+    {
+      "userId": 1,
+      "email": "lky3004me@gmail.com",
+      "nickname": "lkylky",
+      "password": "Warhammer2024!!",
+      "created_at": "2024-03-26T09:59:50.000Z",
+      "updated_at": "2024-05-20T14:58:29.463Z",
+      "deleted_at": null,
+      "auth_token": "pGGXsa6vaKs615CYO0GpJjcDpN6WUjQa"
+    },
+    {
+      "userId": 2,
+      "email": "lky3004me@naver.com",
+      "nickname": "lky1004me",
+      "password": "ABc7890!!",
+      "created_at": "2024-03-26T09:59:50.000Z",
+      "updated_at": "2024-03-26T09:59:50.000Z",
+      "deleted_at": null,
+      "auth_token": "pGGXsa6vaKs615CYO0GpJjcDpN6WUjQa"
+    }
+  ]
 }

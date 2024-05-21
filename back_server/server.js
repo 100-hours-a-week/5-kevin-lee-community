@@ -6,15 +6,16 @@ const userRoutes = require(userRoutesPath);
 const app = express();
 const PORT = process.env.PORT || 4000
 
-app.use(cors({
-    origin:'http://localhost:3000',
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true //쿠키 설정 허용
-}
-))
+app.use(cors());
+// app.use(cors({
+//     origin:'http://localhost:3000',
+//     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     credentials: true //쿠키 설정 허용
+// }
+// ))
+app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
 app.use('/users', userRoutes);    
 
 

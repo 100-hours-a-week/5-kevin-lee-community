@@ -1,6 +1,8 @@
 const express = require("express");
 const path  = require("path");
-const userModelPath = path.join(__dirname, "..","models", "userModel");
+const userModelPath = path.join(__dirname, "..","models", "UserModel");
+const userControllerPath = path.join(__dirname, "..","controllers", "UserController")
+const UserController = require(userControllerPath);
 const UserModel = require(userModelPath);
 const userRoutes = express.Router();
 
@@ -9,15 +11,9 @@ userRoutes.post('/login', (req, res) => {
     const userModel = new UserModel();
     const email = req.body.email;
     const password = req.body.password;
-
-    console.log(email, password);
-
     
-    const rst = userModel.authenticate(email, password);
+    const rst = userModel.loginAuth(email, password);
 
-    /**
-     * 스위치 문에 break 혹은 return 이 빠져 있어서 추가했습니다.
-     */
     switch(rst[0]){
         case 200:
             res.status(200).send({"message": "login_success", "data" : rst[1]})
@@ -41,6 +37,78 @@ userRoutes.post('/login', (req, res) => {
             res.status(500).send({"message": "internal_server_error", "data" : null});
             break;
     }
-})
+});
+
+userRoutes.post("/signup", (req, res) => {
+    const userModel = new UserModel();
+
+    const email = req.body.email;
+    const password = req.body.password;
+    const nickname = req.body.nickname;
+    const img_file = req.body.img_file;
+
+
+    const rst = userModel.signinAuth(email, password, nickname, img_file);
+
+    switch(rst[0]){
+        case 201:
+            res.status(201).send({"message" : "register_success", "data" : rst[1]});
+            break;
+        case 400:
+            if(rst[1] == "invalid_email"){
+                res.status(400).send({"message" : "invalid email" , "data" : null});
+            }else if(rst[1] == "invalid_password"){
+                res.status(400).send({"message" : "invalid password" , "data" : null});
+            }else if(rst[1] == "invalid_nickname"){
+                res.status(400).send({"message" : "invalid nickname" , "data" : null});
+            }
+            break;
+        default:
+            res.status(500).send({"message" : "internel server error" , "data" : null});
+            break;
+    }
+});
+
+// 이메일 중복 체크
+userRoutes.get('/email/check', (req, res) => {
+    const userModel = new UserModel();
+    const email = req.query.email;
+
+    if (!email) {
+        return res.status(400).json({ status: 400, message: 'invalid_email' });
+    }
+
+    const user = userModel.users.find(user => user.email === email);
+    if (user) {
+        return res.status(400).json({ status: 400, message: 'already_exist_email' });
+    } else {
+        return res.status(200).json({ status: 200, message: 'available_email' });
+    }
+});
+
+// 닉네임 중복 체크
+userRoutes.get('/nickname/check', (req, res) => {
+    const userModel = new UserModel();
+    const nickname = req.query.nickname;
+
+    if (!nickname) {
+        return res.status(400).json({ status: 400, message: 'invalid_nickname' });
+    }
+
+    const user = userModel.users.find(user => user.nickname === nickname);
+    if (user) {
+        return res.status(400).json({ status: 400, message: 'already_exist_nickname' });
+    } else {
+        return res.status(200).json({ status: 200, message: 'available_nickname' });
+    }
+});
+
+userRoutes.get('/:user_id', UserController.getUserById);
+
+userRoutes.patch('/:user_id', UserController.updateUser);
+
+userRoutes.patch("/:user_id/password", UserController.changePassword);
+
+userRoutes.delete('/:user_id', UserController.deleteUser);
 
 module.exports = userRoutes;
