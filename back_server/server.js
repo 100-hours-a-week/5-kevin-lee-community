@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+const postRoutesPath = path.join(__dirname, 'routes', 'postRoutes.js');
 const userRoutesPath = path.join(__dirname, 'routes', 'userRoutes.js');
 const userRoutes = require(userRoutesPath);
+const postRoutes = require(postRoutesPath);
 const app = express();
 const PORT = process.env.PORT || 4000
 
@@ -17,7 +19,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use('/users', userRoutes);    
-
+app.use('/posts', postRoutes)
+app.use('/comments', commentRoutes); 
 
 app.listen(PORT, () => {
     console.log(`서버 포트 ${PORT}에서 실행 중입니다.`);

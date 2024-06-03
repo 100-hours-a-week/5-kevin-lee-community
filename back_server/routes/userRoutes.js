@@ -39,37 +39,39 @@ userRoutes.post('/login', (req, res) => {
     }
 });
 
-userRoutes.post("/signup", (req, res) => {
-    const userModel = new UserModel();
+// userRoutes.post("/signup", (req, res) => {
+//     const userModel = new UserModel();
 
-    const email = req.body.email;
-    const password = req.body.password;
-    const nickname = req.body.nickname;
-    const img_file = req.body.img_file;
+//     const email = req.body.email;
+//     const password = req.body.password;
+//     const nickname = req.body.nickname;
+//     const img_file = req.body.img_file;
 
 
-    const rst = userModel.signinAuth(email, password, nickname, img_file);
+//     const rst = userModel.signinAuth(email, password, nickname, img_file);
 
-    switch(rst[0]){
-        case 201:
-            res.status(201).send({"message" : "register_success", "data" : rst[1]});
-            break;
-        case 400:
-            if(rst[1] == "invalid_email"){
-                res.status(400).send({"message" : "invalid email" , "data" : null});
-            }else if(rst[1] == "invalid_password"){
-                res.status(400).send({"message" : "invalid password" , "data" : null});
-            }else if(rst[1] == "invalid_nickname"){
-                res.status(400).send({"message" : "invalid nickname" , "data" : null});
-            }
-            break;
-        default:
-            res.status(500).send({"message" : "internel server error" , "data" : null});
-            break;
-    }
-});
+//     switch(rst[0]){
+//         case 201:
+//             res.status(201).send({"message" : "register_success", "data" : rst[1]});
+//             break;
+//         case 400:
+//             if(rst[1] == "invalid_email"){
+//                 res.status(400).send({"message" : "invalid email" , "data" : null});
+//             }else if(rst[1] == "invalid_password"){
+//                 res.status(400).send({"message" : "invalid password" , "data" : null});
+//             }else if(rst[1] == "invalid_nickname"){
+//                 res.status(400).send({"message" : "invalid nickname" , "data" : null});
+//             }
+//             break;
+//         default:
+//             res.status(500).send({"message" : "internel server error" , "data" : null});
+//             break;
+//     }
+// });
 
 // 이메일 중복 체크
+userRoutes.post('/signup', UserController.signup);
+
 userRoutes.get('/email/check', (req, res) => {
     const userModel = new UserModel();
     const email = req.query.email;

@@ -44,6 +44,43 @@ exports.getUserById = (req, res) => {
     }
 };
 
+exports.signup = (req, res) => {
+    try {
+        const { email, password, nickname, profileImagePath } = req.body;
+
+        // 유효성 검사
+        if (!email || !password || !nickname) {
+            return res.status(400).json({ status: 400, message: 'missing_required_fields', data: null });
+        }
+
+        // 이메일 중복 확인
+        const existingUser = userModel.findUserByEmail(email);
+        if (existingUser) {
+            return res.status(400).json({ status: 400, message: 'email_already_exists', data: null });
+        }
+
+        // 새로운 사용자 생성
+        const newUser = {
+            email,
+            password,
+            nickname,
+            profile_image_path: profileImagePath || '/default/path/to/profile.jpg'
+        };
+
+        const createdUser = userModel.addUser(newUser);
+
+        // userId가 null인 경우 확인
+        if (!createdUser.userId) {
+            throw new Error('User ID is null');
+        }
+
+        return res.status(201).json({ status: 201, message: 'register_success', data: { userId: createdUser.userId } });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+    }
+};
+
 
 exports.updateUser = (req, res) => {
     const userId = req.params.user_id;
