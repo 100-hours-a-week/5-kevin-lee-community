@@ -3,13 +3,13 @@ const router = express.Router();
 const CommentModel = require('../models/CommentModel');
 const commentModel = new CommentModel();
 
-router.get('/posts/:postId/comments', (req, res) => {
+router.get('/:postId/comments', (req, res) => {
     const { postId } = req.params;
     const comments = commentModel.getCommentsByPostId(postId);
     res.status(200).json({ status: 200, message: null, data: comments });
 });
 
-router.post('/posts/:postId/comments', (req, res) => {
+router.post('/:postId/comments', (req, res) => {
     const { postId } = req.params;
     const { userId, content } = req.body;
     if (!userId || !content) {
@@ -19,7 +19,7 @@ router.post('/posts/:postId/comments', (req, res) => {
     res.status(201).json({ status: 201, message: 'write_comment_success', data: newComment });
 });
 
-router.patch('/posts/:postId/comments/:commentId', (req, res) => {
+router.patch('/:postId/comments/:commentId', (req, res) => {
     const { commentId } = req.params;
     const { content } = req.body;
     if (!content) {
@@ -33,7 +33,7 @@ router.patch('/posts/:postId/comments/:commentId', (req, res) => {
     }
 });
 
-router.delete('/posts/:postId/comments/:commentId', (req, res) => {
+router.delete('/:postId/comments/:commentId', (req, res) => {
     const { commentId } = req.params;
     const deletedComment = commentModel.deleteComment(commentId);
     if (deletedComment) {
