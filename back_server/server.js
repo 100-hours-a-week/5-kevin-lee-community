@@ -22,7 +22,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use('/users', userRoutes);    
 app.use('/posts', postRoutes)
-app.use('/posts', commentRoutes); 
 
 app.listen(PORT, () => {
     console.log(`서버 포트 ${PORT}에서 실행 중입니다.`);

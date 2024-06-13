@@ -141,13 +141,8 @@ const postModel = new PostModel();
 
 exports.getPosts = async (req, res) => {
     try {
-        const { offset = 0, limit = 10 } = req.query;
 
-        if (isNaN(offset) || isNaN(limit) || offset < 0 || limit < 1) {
-            return res.status(400).json({ status: 400, message: 'invalid_offset_or_limit', data: null });
-        }
-
-        const posts = await postModel.getPosts(parseInt(offset, 10), parseInt(limit, 10));
+        const posts = await postModel.getPosts();
 
         if (posts.length === 0) {
             return res.status(404).json({ status: 404, message: 'not_a_single_post', data: null });
@@ -162,7 +157,6 @@ exports.getPosts = async (req, res) => {
 exports.getPostById = async (req, res) => {
     try {
         const postId = req.params.post_id;
-
         if (!postId || isNaN(postId)) {
             return res.status(400).json({ status: 400, message: "invalid_post_id", data: null });
         }
@@ -179,56 +173,49 @@ exports.getPostById = async (req, res) => {
 };
 
 exports.addPost = async (req, res) => {
-    try {
-        const { postTitle, postContent, attachFilePath } = req.body;
+    const { post_title, post_content, user_id } = req.body;
 
-        if (!postTitle || !postContent) {
-            return res.status(400).json({ status: 400, message: 'invalid_post_title_or_content', data: null });
-        }
-
-        const newPost = {
-            post_title: postTitle,
-            post_content: postContent,
-            file_path: attachFilePath || null
-        };
-
-        const createdPost = await postModel.addPost(newPost);
-
-        return res.status(201).json({ status: 201, message: 'write_post_success', data: { post_id: createdPost.post_id } });
-    } catch (error) {
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+    
+    if (!post_title || !post_content) {
+        return res.status(400).json({ status: 400, message: 'invalid_post_title_or_content', data: null });
     }
+
+    const newPost = {
+        post_title: post_title,
+        post_content: post_content,
+        user_id : user_id,
+    };
+
+    const createdPost = await postModel.addPost(newPost);
+
+    return res.status(201).json({ status: 201, message: 'write_post_success', data: { post_id: createdPost.post_id } });
 };
 
 exports.updatePost = async (req, res) => {
-    try {
-        const postId = req.params.post_id;
-        const { postTitle, postContent, attachFilePath } = req.body;
+    const postId = req.params.post_id;
+    const { postTitle, postContent } = req.body;
 
-        if (!postId || isNaN(postId)) {
-            return res.status(400).json({ status: 400, message: 'invalid_post_id', data: null });
-        }
-
-        if (!postTitle || !postContent) {
-            return res.status(400).json({ status: 400, message: 'invalid_post_title_or_content', data: null });
-        }
-
-        const updatedData = {
-            post_title: postTitle,
-            post_content: postContent,
-            file_path: attachFilePath || null
-        };
-
-        const updatedPost = await postModel.updatePost(postId, updatedData);
-
-        if (!updatedPost) {
-            return res.status(404).json({ status: 404, message: 'not_a_single_post', data: null });
-        }
-
-        return res.status(200).json({ status: 200, message: 'update_post_success', data: { post_id: updatedPost.post_id } });
-    } catch (error) {
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+    if (!postId || isNaN(postId)) {
+        return res.status(400).json({ status: 400, message: 'invalid_post_id', data: null });
     }
+
+    if (!postTitle || !postContent) {
+        return res.status(400).json({ status: 400, message: 'invalid_post_title_or_content', data: null });
+    }
+
+    const updatedData = {
+        post_title: postTitle,
+        post_content: postContent,
+    };
+
+    const updatedPost = await postModel.updatePost(postId, updatedData);
+
+    if (!updatedPost) {
+        return res.status(404).json({ status: 404, message: 'not_a_single_post', data: null });
+    }
+
+    return res.status(200).json({ status: 200, message: 'update_post_success', data: { post_id: updatedPost.post_id } });
+    
 };
 
 exports.deletePost = async (req, res) => {
@@ -249,8 +236,4 @@ exports.deletePost = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
     }
-};
-
-exports.getComments = async (req, res) => {
-    // Implement this method based on your new data model and requirements
 };

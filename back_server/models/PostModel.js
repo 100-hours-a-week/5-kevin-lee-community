@@ -81,26 +81,64 @@ class PostModel {
             database: 'community'
         };
     }
-
-    async getPosts(offset, limit) {
+    //이전 작동 코드
+    // async getPosts(offset, limit) {
+    //     const connection = await mysql.createConnection(this.dbConfig);
+    //     const [rows] = await connection.execute(`
+    //         SELECT p.*, u.nickname
+    //         FROM postinfo p
+    //         JOIN userinfo u ON p.user_id = u.user_id`);
+    //     await connection.end();
+    //     return rows;
+    // }
+    async getPosts() {
         const connection = await mysql.createConnection(this.dbConfig);
-        const [rows] = await connection.execute('SELECT * FROM postinfo LIMIT ?, ?', [offset, limit]);
+        const [rows] = await connection.execute(`
+            SELECT p.*, u.nickname, COALESCE(c.comment_counts, 0) AS comment_counts
+            FROM postinfo p
+            JOIN userinfo u ON p.user_id = u.user_id
+            LEFT JOIN (
+                SELECT post_id, COUNT(*) AS comment_counts
+                FROM commentinfo
+                GROUP BY post_id
+            ) c ON p.post_id = c.post_id`);
         await connection.end();
         return rows;
     }
 
+    // async getPostById(postId) {
+    //     const connection = await mysql.createConnection(this.dbConfig);
+    //     const [rows] = await connection.execute(`
+    //         SELECT p.*, u.nickname
+    //         FROM postinfo p
+    //         JOIN userinfo u ON p.user_id = u.user_id
+    //         WHERE p.post_id = ?`, [postId]);
+    //     await connection.end();
+    //     return rows[0];
+    // }
+    
     async getPostById(postId) {
         const connection = await mysql.createConnection(this.dbConfig);
-        const [rows] = await connection.execute('SELECT * FROM postinfo WHERE post_id = ?', [postId]);
+        const [rows] = await connection.execute(`
+            SELECT p.*, u.nickname, COALESCE(c.comment_counts, 0) AS comment_counts
+            FROM postinfo p
+            JOIN userinfo u ON p.user_id = u.user_id
+            LEFT JOIN (
+                SELECT post_id, COUNT(*) AS comment_counts
+                FROM commentinfo
+                GROUP BY post_id
+            ) c ON p.post_id = c.post_id
+            WHERE p.post_id = ?`, [postId]);
         await connection.end();
         return rows[0];
+        
     }
 
     async addPost(newPost) {
         const connection = await mysql.createConnection(this.dbConfig);
         const [result] = await connection.execute(
-            'INSERT INTO postinfo (post_title, post_content, file_path, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())',
-            [newPost.post_title, newPost.post_content, newPost.file_path]
+            'INSERT INTO postinfo (post_title, post_content, user_id, created_at, updated_at) VALUES (?, ?, ?,NOW(), NOW())',
+            [newPost.post_title, newPost.post_content, newPost.user_id]
         );
         await connection.end();
         return { post_id: result.insertId };
@@ -109,8 +147,8 @@ class PostModel {
     async updatePost(postId, updatedData) {
         const connection = await mysql.createConnection(this.dbConfig);
         await connection.execute(
-            'UPDATE postinfo SET post_title = ?, post_content = ?, file_path = ?, updated_at = NOW() WHERE post_id = ?',
-            [updatedData.post_title, updatedData.post_content, updatedData.file_path, postId]
+            'UPDATE postinfo SET post_title = ?, post_content = ?, updated_at = NOW() WHERE post_id = ?',
+            [updatedData.post_title, updatedData.post_content, postId]
         );
         await connection.end();
         return this.getPostById(postId);
