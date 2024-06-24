@@ -118,6 +118,28 @@ class CommentModel {
         await connection.end();
         return result.affectedRows > 0;
     }
+
+    async deleteCommentsByUser(userId){
+        const connection = await mysql.createConnection(this.dbConfig);
+
+        try {
+            await connection.beginTransaction();
+
+            const query = 'DELETE FROM commentinfo WHERE user_id = ?';
+            const [results] = await connection.execute(query, [userId]);
+
+            await connection.commit();
+            return results;
+        } catch (error) {
+            // 트랜잭션 롤백
+            await connection.rollback();
+            throw error;
+        } finally {
+            // 연결 종료
+            await connection.end();
+        }
+       
+    };
 }
 
 module.exports = CommentModel;

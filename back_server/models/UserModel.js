@@ -152,20 +152,25 @@ class UserModel {
             return [400, "password"];
         }
 
-        const connection = await mysql.createConnection(this.dbConfig);
-        const [rows] = await connection.execute('SELECT * FROM userinfo WHERE email = ?', [email]);
-        await connection.end();
+        try {
+            const connection = await mysql.createConnection(this.dbConfig);
+            const [rows] = await connection.execute('SELECT * FROM userinfo WHERE email = ?', [email]);
+            await connection.end();
 
-        const user = rows[0];
+            const user = rows[0];
 
-        if (user) {
-            if (user.password === password) {
-                return [200, "login_success", user];
+            if (user) {
+                if (user.password === password) {
+                    return [200, "login_success", user];
+                } else {
+                    return [401, "invalid_password"];
+                }
             } else {
-                return [401, "invalid_password"];
+                return [401, "invalid_email"];
             }
-        } else {
-            return [401, "invalid_email"];
+        } catch (error) {
+            console.error('Database error:', error);
+            return [500, "internal_server_error"];
         }
     }
 
@@ -186,6 +191,13 @@ class UserModel {
         return rows[0];
     }
 
+    async findUserByNick(nickname) {
+        const connection = await mysql.createConnection(this.dbConfig);
+        const [rows] = await connection.execute('SELECT * FROM userinfo WHERE nickname = ?', [nickname]);
+        await connection.end();
+        return rows[0];
+    }
+
     async getUserById(userId) {
         const connection = await mysql.createConnection(this.dbConfig);
         const [rows] = await connection.execute('SELECT * FROM userinfo WHERE user_id = ?', [userId]);
@@ -196,8 +208,8 @@ class UserModel {
     async updateUser(userId, updatedData) {
         const connection = await mysql.createConnection(this.dbConfig);
         const [result] = await connection.execute(
-            'UPDATE userinfo SET nickname = ?, profile_image_path = ?, updated_at = NOW() WHERE user_id = ?',
-            [updatedData.nickname, updatedData.profile_image_path, userId]
+            'UPDATE userinfo SET nickname = ?, updated_at = NOW() WHERE user_id = ?',
+            [updatedData.nickname, userId]
         );
         await connection.end();
         return this.getUserById(userId);

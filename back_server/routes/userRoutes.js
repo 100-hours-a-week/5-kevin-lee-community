@@ -7,35 +7,39 @@ const UserModel = require(userModelPath);
 const userRoutes = express.Router();
 
 
-userRoutes.post('/login', (req, res) => {
-    const userModel = new UserModel();
-    const email = req.body.email;
-    const password = req.body.password;
-    
-    const rst = userModel.loginAuth(email, password);
+userRoutes.post('/login', async (req, res) => {
+    try {
+        const userModel = new UserModel();
+        const email = req.body.email;
+        const password = req.body.password;
+        
+        const rst = await userModel.loginAuth(email, password);
 
-    switch(rst[0]){
-        case 200:
-            res.status(200).send({"message": "login_success", "data" : rst[1]})
-            break;
-        case 400:
-            // 동등 연산자를 사용하셔야 합니다.
-            if(rst[1] === "email"){
-                res.status(400).send({"message": "required_email", "data" : null});
-            }else if(rst[1] == "password"){
-                res.status(400).send({"message": "required_password", "data" : null});
-            }
-            break;
-        case 401:
-            if(rst[1] == "invalid_email"){
-                res.status(401).send({"message": "invalid_email", "data" : null});
-            }else{
-                res.status(401).send({"message": "invalid_password", "data" : null});
-            }
-            break;
-        default:
-            res.status(500).send({"message": "internal_server_error", "data" : null});
-            break;
+        switch (rst[0]) {
+            case 200:
+                res.status(200).send({ "message": "login_success", "data": rst[1] });
+                break;
+            case 400:
+                if (rst[1] === "email") {
+                    res.status(400).send({ "message": "required_email", "data": null });
+                } else if (rst[1] === "password") {
+                    res.status(400).send({ "message": "required_password", "data": null });
+                }
+                break;
+            case 401:
+                if (rst[1] === "invalid_email") {
+                    res.status(401).send({ "message": "invalid_email", "data": null });
+                } else {
+                    res.status(401).send({ "message": "invalid_password", "data": null });
+                }
+                break;
+            default:
+                res.status(500).send({ "message": "internal_server_error", "data": null });
+                break;
+        }
+    } catch (error) {
+        console.error('Route error:', error);
+        res.status(500).send({ "message": "internal_server_error", "data": null });
     }
 });
 
@@ -89,21 +93,7 @@ userRoutes.get('/email/check', (req, res) => {
 });
 
 // 닉네임 중복 체크
-userRoutes.get('/nickname/check', (req, res) => {
-    const userModel = new UserModel();
-    const nickname = req.query.nickname;
-
-    if (!nickname) {
-        return res.status(400).json({ status: 400, message: 'invalid_nickname' });
-    }
-
-    const user = userModel.users.find(user => user.nickname === nickname);
-    if (user) {
-        return res.status(400).json({ status: 400, message: 'already_exist_nickname' });
-    } else {
-        return res.status(200).json({ status: 200, message: 'available_nickname' });
-    }
-});
+userRoutes.get('/nickname/check', UserController.checkNickname);
 
 userRoutes.get('/:user_id', UserController.getUserById);
 

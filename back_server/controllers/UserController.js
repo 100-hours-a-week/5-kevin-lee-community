@@ -146,7 +146,12 @@
 // };
 
 const UserModel = require('../models/UserModel');
+const PostModel = require('../models/PostModel'); // 게시글 모델
+const CommentModel = require('../models/CommentModel'); // 댓글 모델
+
 const userModel = new UserModel();
+const postModel = new PostModel();
+const commentModel = new CommentModel();
 
 exports.checkEmail = async (req, res) => {
     const email = req.query.email;
@@ -168,7 +173,7 @@ exports.checkNickname = async (req, res) => {
         return res.status(400).json({ status: 400, message: 'invalid_nickname' });
     }
 
-    const user = await userModel.findUserByNickname(nickname); // Implement findUserByNickname method in UserModel
+    const user = await userModel.findUserByNick(nickname); 
     if (user) {
         return res.status(400).json({ status: 400, message: 'already_exist_nickname' });
     } else {
@@ -227,13 +232,13 @@ exports.signup = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     const userId = req.params.user_id;
-    const { nickname, profileImagePath } = req.body;
+    const { nickname } = req.body;
 
     if (!nickname) {
         return res.status(400).json({ status: 400, message: 'invalid_nickname' });
     }
 
-    const updatedData = { nickname, profile_image_path: profileImagePath };
+    const updatedData = { nickname };
 
     const updatedUser = await userModel.updateUser(userId, updatedData);
 
@@ -272,15 +277,11 @@ exports.deleteUser = async (req, res) => {
         return res.status(400).json({ status: 400, message: 'invalid_user_id' });
     }
 
-    const user = await userModel.getUserById(userId);
-    if (!user) {
-        return res.status(404).json({ status: 404, message: 'not_found_user' });
-    }
+    // 사용자, 게시글, 댓글 삭제
+    await userModel.deleteUser(userId);
+    await postModel.deletePostsByUser(userId);
+    await commentModel.deleteCommentsByUser(userId);
 
-    const deleted = await userModel.deleteUser(userId);
-    if (deleted) {
-        return res.status(200).json({ status: 200, message: 'delete_user_data_success', data: null });
-    } else {
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
-    }
+    return res.status(200).json({ status: 200, message: 'delete_user_success' });
+    
 };

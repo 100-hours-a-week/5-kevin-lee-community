@@ -156,10 +156,55 @@ class PostModel {
 
     async deletePost(postId) {
         const connection = await mysql.createConnection(this.dbConfig);
-        const [result] = await connection.execute('DELETE FROM postinfo WHERE post_id = ?', [postId]);
-        await connection.end();
-        return result.affectedRows > 0;
+    
+        try {
+            // 트랜잭션 시작
+            await connection.beginTransaction();
+    
+            // 댓글 삭제
+            const [commentResult] = await connection.execute('DELETE FROM commentinfo WHERE post_id = ?', [postId]);
+    
+            // 게시글 삭제
+            const [postResult] = await connection.execute('DELETE FROM postinfo WHERE post_id = ?', [postId]);
+    
+            // 트랜잭션 커밋
+            await connection.commit();
+    
+            return postResult.affectedRows > 0;
+        } catch (error) {
+            // 트랜잭션 롤백
+            await connection.rollback();
+            throw error;
+        } finally {
+            // 연결 종료
+            await connection.end();
+        }
     }
+    
+    async deletePostsByUser(userId){
+        const connection = await mysql.createConnection(this.dbConfig);
+
+        try {
+
+            await connection.beginTransaction();
+
+            const query = 'DELETE FROM postinfo WHERE user_id = ?';
+            const [results] = await connection.execute(query, [userId]);
+
+            await connection.commit();
+            return results;
+            
+        } catch (error) {
+            // 트랜잭션 롤백
+            await connection.rollback();
+            throw error;
+        } finally {
+            // 연결 종료
+            await connection.end();
+        }
+    };
 }
+
+
 
 module.exports = PostModel;
