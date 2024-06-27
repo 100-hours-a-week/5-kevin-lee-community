@@ -137,10 +137,11 @@ class PostModel {
     //게시글 추가
     async addPost(newPost) {
         const connection = await mysql.createConnection(this.dbConfig);
-        
+        let result;
+
         try{
             await connection.beginTransaction();
-            const [result] = await connection.execute(
+            [result] = await connection.execute(
                 'INSERT INTO postinfo (post_title, post_content, user_id, created_at, updated_at) VALUES (?, ?, ?,NOW(), NOW())',
                 [newPost.post_title, newPost.post_content, newPost.user_id]
             );

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const pathname = window.location.pathname;
     const postId = pathname.split('/').pop(); // 마지막 부분이 postId
 
@@ -9,16 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const postsContainer = document.getElementById('post_container');
 
-    fetch(`http://localhost:4000/posts/${postId}`)
-        .then(response => response.json())
-        .then(response => {
-            if (response.status === 200 && response.data) {
-                const post = response.data;
+    try {
+        const response = await fetch(`http://localhost:4000/posts/${postId}`);
+        const responseData = await response.json();
 
-                const postDiv = document.createElement('div');
-                postDiv.classList.add('post');
+        if (response.status === 200 && responseData.data) {
+            const post = responseData.data;
 
-                postDiv.innerHTML = `
+            const postDiv = document.createElement('div');
+            postDiv.classList.add('post');
+
+            postDiv.innerHTML = `
                 <form class="post_correct">
                     <div class="post_correct_title">제목*</div>
                     <hr class="horizontal-rule2"/>
@@ -37,56 +38,48 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </form>`;
 
-                postsContainer.appendChild(postDiv);
+            postsContainer.appendChild(postDiv);
 
-                const post_delete_modal = document.getElementById('postDelete_container');
+            const post_delete_modal = document.getElementById('postDelete_container');
 
-                document.getElementById('backward').addEventListener('click', function(){
-                    window.location.href = `/post/detail/${postId}`
-                });
-            
-                document.getElementById('post_correct_btn').addEventListener('click', function(event){
-                    event.preventDefault();
+            document.getElementById('backward').addEventListener('click', () => {
+                window.location.href = `/post/detail/${postId}`;
+            });
 
-                    const postTitle = document.getElementById('post_correct_titleInput').value;
-                    const postContent = document.getElementById('post_correct_contentInput').value;
-                
+            document.getElementById('post_correct_btn').addEventListener('click', async (event) => {
+                event.preventDefault();
 
-                    //게시글 수정
-                    fetch(`http://localhost:4000/posts/${postId}`, {
+                const postTitle = document.getElementById('post_correct_titleInput').value;
+                const postContent = document.getElementById('post_correct_contentInput').value;
+
+                try {
+                    const response = await fetch(`http://localhost:4000/posts/${postId}`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         credentials: 'include',
                         body: JSON.stringify({ postTitle, postContent })
-                    })
-                    .then(response => {
-                        if(response.status == 403){
-                            throw new Error('권한이 없습니다.');
-                        }else if (response.status != 200) {
-                            throw new Error('게시글 수정에 실패했습니다.');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        alert('게시글이 수정되었습니다.');
-                        window.location.href = `/post/detail/${postId}`;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('게시글 수정 중 오류가 발생했습니다.');
                     });
-                    
-                });
-                
-            } else {
-                console.error('Failed to fetch post details:', response);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching posts:', error);
-        });
+
+                    if (response.status == 403) {
+                        throw new Error('권한이 없습니다.');
+                    } else if (response.status != 200) {
+                        throw new Error('게시글 수정에 실패했습니다.');
+                    }
+
+                    const data = await response.json();
+                    alert('게시글이 수정되었습니다.');
+                    window.location.href = `/post/detail/${postId}`;
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('게시글 수정 중 오류가 발생했습니다.');
+                }
+            });
+        } else {
+            console.error('Failed to fetch post details:', responseData);
+        }
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+    }
 });
-
-

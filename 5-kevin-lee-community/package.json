@@ -1,18 +1,14 @@
 {
-  "name": "express",
+  "name": "5-kevin-lee-community",
   "version": "0.0.1",
   "type": "module",
   "private": true,
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "start": "node app.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
     "debug": "^4.3.4",
     "express": "^4.18.2",
     "http-errors": "^2.0.0"
