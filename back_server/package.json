@@ -1,0 +1,21 @@
+{
+  "name": "back_server",
+  "version": "0.0.1",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start-with-inspect": "node  --inspect-brk server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "http-errors": "^2.0.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.10.0"
+  }
+}
