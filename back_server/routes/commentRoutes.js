@@ -48,13 +48,14 @@
 const express = require('express');
 const router = express.Router();
 const CommentController = require('../controllers/CommentController');
+const isAuthenticated = require('../middleware/auth');
 
 router.get('/:postId/comments', CommentController.getCommentsByPostId);
 
-router.post('/:postId/comments', CommentController.addComment);
+router.post('/:postId/comments', isAuthenticated ,CommentController.addComment);
 
-router.patch('/:postId/comments/:commentId', CommentController.updateComment);
+router.patch('/:postId/comments/:commentId', isAuthenticated, CommentController.updateComment);
 
-router.delete('/:postId/comments/:commentId', CommentController.deleteComment);
+router.delete('/:postId/comments/:commentId', isAuthenticated, CommentController.deleteComment);
 
 module.exports = router;

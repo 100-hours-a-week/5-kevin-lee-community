@@ -145,33 +145,38 @@ class UserModel {
         };
     }
 
+    // async loginAuth(email, password) {
+    //     if (!email) {
+    //         return [400, "email"];
+    //     } else if (!password) {
+    //         return [400, "password"];
+    //     }
+
+        
+    //     const connection = await mysql.createConnection(this.dbConfig);
+    //     const [rows] = await connection.execute('SELECT * FROM userinfo WHERE email = ?', [email]);
+    //     await connection.end();
+
+    //     const user = rows[0];
+
+    //     if (user) {
+    //         if (user.password === password) {
+    //             return [200, "login_success", user];
+    //         } else {
+    //             return [401, "invalid_password"];
+    //         }
+    //     } else {
+    //         return [401, "invalid_email"];
+    //     }
+        
+    // }
     async loginAuth(email, password) {
-        if (!email) {
-            return [400, "email"];
-        } else if (!password) {
-            return [400, "password"];
-        }
-
-        try {
-            const connection = await mysql.createConnection(this.dbConfig);
-            const [rows] = await connection.execute('SELECT * FROM userinfo WHERE email = ?', [email]);
-            await connection.end();
-
-            const user = rows[0];
-
-            if (user) {
-                if (user.password === password) {
-                    return [200, "login_success", user];
-                } else {
-                    return [401, "invalid_password"];
-                }
-            } else {
-                return [401, "invalid_email"];
-            }
-        } catch (error) {
-            console.error('Database error:', error);
-            return [500, "internal_server_error"];
-        }
+        
+        const connection = await mysql.createConnection(this.dbConfig);
+        const [rows] = await connection.execute('SELECT * FROM userinfo WHERE email = ? AND password = ?', [email, password]);
+        await connection.end();
+        return rows[0];
+        
     }
 
     async addUser(newUser) {

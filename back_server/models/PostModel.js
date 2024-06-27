@@ -91,6 +91,7 @@ class PostModel {
     //     await connection.end();
     //     return rows;
     // }
+    //게시글 전체 획득
     async getPosts() {
         const connection = await mysql.createConnection(this.dbConfig);
         const [rows] = await connection.execute(`
@@ -116,7 +117,7 @@ class PostModel {
     //     await connection.end();
     //     return rows[0];
     // }
-    
+    //아이디에 의한 게시글 취득
     async getPostById(postId) {
         const connection = await mysql.createConnection(this.dbConfig);
         const [rows] = await connection.execute(`
@@ -133,27 +134,48 @@ class PostModel {
         return rows[0];
         
     }
-
+    //게시글 추가
     async addPost(newPost) {
         const connection = await mysql.createConnection(this.dbConfig);
-        const [result] = await connection.execute(
-            'INSERT INTO postinfo (post_title, post_content, user_id, created_at, updated_at) VALUES (?, ?, ?,NOW(), NOW())',
-            [newPost.post_title, newPost.post_content, newPost.user_id]
-        );
-        await connection.end();
+        
+        try{
+            await connection.beginTransaction();
+            const [result] = await connection.execute(
+                'INSERT INTO postinfo (post_title, post_content, user_id, created_at, updated_at) VALUES (?, ?, ?,NOW(), NOW())',
+                [newPost.post_title, newPost.post_content, newPost.user_id]
+            );
+            await  connection.commit();
+
+        }catch(error){
+            await connection.rollback();
+            throw error;
+        }finally{
+            await connection.end();
+        }
+
         return { post_id: result.insertId };
     }
-
+    //게시글 수정
     async updatePost(postId, updatedData) {
         const connection = await mysql.createConnection(this.dbConfig);
-        await connection.execute(
-            'UPDATE postinfo SET post_title = ?, post_content = ?, updated_at = NOW() WHERE post_id = ?',
-            [updatedData.post_title, updatedData.post_content, postId]
-        );
-        await connection.end();
+
+        try{
+            await connection.beginTransaction();
+            await connection.execute(
+                'UPDATE postinfo SET post_title = ?, post_content = ?, updated_at = NOW() WHERE post_id = ?',
+                [updatedData.post_title, updatedData.post_content, postId]
+            );
+            await  connection.commit();
+        }catch(error){
+            await connection.rollback();
+            throw error;
+        }finally{
+            await connection.end();
+        }
+        
         return this.getPostById(postId);
     }
-
+    //게시글 삭제
     async deletePost(postId) {
         const connection = await mysql.createConnection(this.dbConfig);
     
@@ -180,7 +202,9 @@ class PostModel {
             await connection.end();
         }
     }
+
     
+    //유저 삭제시 게시글 삭제
     async deletePostsByUser(userId){
         const connection = await mysql.createConnection(this.dbConfig);
 

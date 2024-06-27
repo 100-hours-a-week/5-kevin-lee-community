@@ -87,21 +87,44 @@ class CommentModel {
 
     async addComment(postId, userId, comment_content) {
         const connection = await mysql.createConnection(this.dbConfig);
-        const [result] = await connection.execute(
-            'INSERT INTO commentinfo (post_id, user_id, comment_content, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())',
-            [postId, userId, comment_content]
-        );
-        await connection.end();
+        let result;
+
+        try{
+            await connection.beginTransaction();
+            [result] = await connection.execute(
+                'INSERT INTO commentinfo (post_id, user_id, comment_content, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())',
+                [postId, userId, comment_content]
+            );
+            await  connection.commit();
+
+        }catch(error){
+            await connection.rollback();
+            throw error;
+        }finally{
+            await connection.end();
+        }
+        
         return { comment_id: result.insertId, post_id: postId, user_id: userId, comment_content };
     }
 
     async updateComment(commentId, comment_content) {
         const connection = await mysql.createConnection(this.dbConfig);
-        await connection.execute(
-            'UPDATE commentinfo SET comment_content = ?, updated_at = NOW() WHERE comment_id = ?',
-            [comment_content, commentId]
-        );
-        await connection.end();
+
+        try{
+            await connection.beginTransaction();
+            await connection.execute(
+                'UPDATE commentinfo SET comment_content = ?, updated_at = NOW() WHERE comment_id = ?',
+                [comment_content, commentId]
+            );
+            await  connection.commit();
+
+        }catch(error){
+            await connection.rollback();
+            throw error;
+        }finally{
+            await connection.end();
+        }
+        
         return this.getCommentById(commentId);
     }
 
@@ -114,8 +137,19 @@ class CommentModel {
 
     async deleteComment(commentId) {
         const connection = await mysql.createConnection(this.dbConfig);
-        const [result] = await connection.execute('DELETE FROM commentinfo WHERE comment_id = ?', [commentId]);
-        await connection.end();
+        let result;
+        try{
+            await connection.beginTransaction();
+            [result] = await connection.execute('DELETE FROM commentinfo WHERE comment_id = ?', [commentId]);
+
+            await  connection.commit();
+
+        }catch(error){
+            await connection.rollback();
+            throw error;
+        }finally{
+            await connection.end();
+        }
         return result.affectedRows > 0;
     }
 

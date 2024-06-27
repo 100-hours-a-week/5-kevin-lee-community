@@ -138,7 +138,7 @@
 
 const PostModel = require('../models/PostModel');
 const postModel = new PostModel();
-
+//게시글 전체 획득
 exports.getPosts = async (req, res) => {
     try {
 
@@ -153,7 +153,7 @@ exports.getPosts = async (req, res) => {
         return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
     }
 };
-
+//아이디에 의한 게시글 검색
 exports.getPostById = async (req, res) => {
     try {
         const postId = req.params.post_id;
@@ -171,7 +171,7 @@ exports.getPostById = async (req, res) => {
         return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
     }
 };
-
+//게시글 추가
 exports.addPost = async (req, res) => {
     const { post_title, post_content, user_id } = req.body;
 
@@ -190,7 +190,7 @@ exports.addPost = async (req, res) => {
 
     return res.status(201).json({ status: 201, message: 'write_post_success', data: { post_id: createdPost.post_id } });
 };
-
+//게시글 수정
 exports.updatePost = async (req, res) => {
     const postId = req.params.post_id;
     const { postTitle, postContent } = req.body;
@@ -202,6 +202,17 @@ exports.updatePost = async (req, res) => {
     if (!postTitle || !postContent) {
         return res.status(400).json({ status: 400, message: 'invalid_post_title_or_content', data: null });
     }
+
+    // 게시글 소유자 확인
+    const post = await postModel.getPostById(postId);
+    if (!post) {
+        return res.status(404).json({ status: 404, message: 'cannot_found_post', data: null });
+    }
+
+    if (post.user_id !== req.session.user_id) {
+        return res.status(403).json({ status: 403, message: 'Forbidden', data: null });
+    }
+
 
     const updatedData = {
         post_title: postTitle,
@@ -217,7 +228,7 @@ exports.updatePost = async (req, res) => {
     return res.status(200).json({ status: 200, message: 'update_post_success', data: { post_id: updatedPost.post_id } });
     
 };
-
+//게시글 삭제
 exports.deletePost = async (req, res) => {
     try {
         const postId = req.params.post_id;
@@ -225,6 +236,17 @@ exports.deletePost = async (req, res) => {
         if (!postId || isNaN(postId)) {
             return res.status(400).json({ status: 400, message: 'invalid_post_id', data: null });
         }
+
+         // 게시글 소유자 확인
+        const post = await postModel.getPostById(postId);
+        if (!post) {
+            return res.status(404).json({ status: 404, message: 'cannot_found_post', data: null });
+        }
+
+        if (post.user_id !== req.session.user_id) {
+            return res.status(403).json({ status: 403, message: 'Forbidden', data: null });
+        }
+
 
         const deleted = await postModel.deletePost(postId);
 
