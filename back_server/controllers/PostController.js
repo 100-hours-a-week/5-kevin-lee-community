@@ -168,7 +168,7 @@ exports.getPostById = async (req, res) => {
         }
         return res.status(200).json({ data: post });
     } catch (error) {
-        return res.status(500).json({ data: null });
+        return res.status(500);
     }
 };
 //게시글 추가
@@ -196,21 +196,20 @@ exports.updatePost = async (req, res) => {
     const { postTitle, postContent } = req.body;
 
     if (!postId || isNaN(postId)) {
-        return res.status(400).json({ data: null });
+        return res.status(400);
     }
 
     if (!postTitle || !postContent) {
-        return res.status(400).json({ data: null });
-    }
+        return res.status(400);    }
 
     // 게시글 소유자 확인
     const post = await postModel.getPostById(postId);
     if (!post) {
-        return res.status(404).json({ data: null });
+        return res.status(404);
     }
 
     if (post.user_id !== req.session.user_id) {
-        return res.status(403).json({ data: null });
+        return res.status(403);
     }
 
 
@@ -222,7 +221,7 @@ exports.updatePost = async (req, res) => {
     const updatedPost = await postModel.updatePost(postId, updatedData);
 
     if (!updatedPost) {
-        return res.status(404).json({ data: null });
+        return res.status(404);
     }
 
     return res.status(200).json({  data: { post_id: updatedPost.post_id } });
@@ -240,7 +239,7 @@ exports.deletePost = async (req, res) => {
          // 게시글 소유자 확인
         const post = await postModel.getPostById(postId);
         if (!post) {
-            return res.status(404).json({ data: null });
+            return res.status(404);
         }
 
         if (post.user_id !== req.session.user_id) {
