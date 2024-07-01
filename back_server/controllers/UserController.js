@@ -326,7 +326,7 @@ exports.signup = async (req, res) => {
         const { email, password, nickname, profileImagePath } = req.body;
 
         if (!email || !password || !nickname) {
-            return res.status(400).json({  data: null });
+            return res.status(400);
         }
 
         const existingUser = await userModel.findUserByEmail(email);
@@ -350,7 +350,7 @@ exports.signup = async (req, res) => {
         return res.status(201).json({data: { user_id: createdUser.user_id } });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({  data: null });
+        return res.status(500);
     }
 };
 
