@@ -145,12 +145,12 @@ exports.getPosts = async (req, res) => {
         const posts = await postModel.getPosts();
 
         if (posts.length === 0) {
-            return res.status(404).json({ status: 404, message: 'not_a_single_post', data: null });
+            return res.status(404).json({data: null });
         }
 
-        return res.status(200).json({ status: 200, message: null, data: posts });
+        return res.status(200).json({data: posts });
     } catch (error) {
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+        return res.status(500).json({  data: null });
     }
 };
 //아이디에 의한 게시글 검색
@@ -158,17 +158,17 @@ exports.getPostById = async (req, res) => {
     try {
         const postId = req.params.post_id;
         if (!postId || isNaN(postId)) {
-            return res.status(400).json({ status: 400, message: "invalid_post_id", data: null });
+            return res.status(400).json({  data: null });
         }
 
         const post = await postModel.getPostById(postId);
 
         if (!post) {
-            return res.status(404).json({ status: 404, message: 'cannot_found_post', data: null });
+            return res.status(404).json({  data: null });
         }
-        return res.status(200).json({ status: 200, message: null, data: post });
+        return res.status(200).json({ data: post });
     } catch (error) {
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+        return res.status(500).json({ data: null });
     }
 };
 //게시글 추가
@@ -188,7 +188,7 @@ exports.addPost = async (req, res) => {
 
     const createdPost = await postModel.addPost(newPost);
 
-    return res.status(201).json({ status: 201, message: 'write_post_success', data: { post_id: createdPost.post_id } });
+    return res.status(201).json({  data: { post_id: createdPost.post_id } });
 };
 //게시글 수정
 exports.updatePost = async (req, res) => {
@@ -196,21 +196,21 @@ exports.updatePost = async (req, res) => {
     const { postTitle, postContent } = req.body;
 
     if (!postId || isNaN(postId)) {
-        return res.status(400).json({ status: 400, message: 'invalid_post_id', data: null });
+        return res.status(400).json({ data: null });
     }
 
     if (!postTitle || !postContent) {
-        return res.status(400).json({ status: 400, message: 'invalid_post_title_or_content', data: null });
+        return res.status(400).json({ data: null });
     }
 
     // 게시글 소유자 확인
     const post = await postModel.getPostById(postId);
     if (!post) {
-        return res.status(404).json({ status: 404, message: 'cannot_found_post', data: null });
+        return res.status(404).json({ data: null });
     }
 
     if (post.user_id !== req.session.user_id) {
-        return res.status(403).json({ status: 403, message: 'Forbidden', data: null });
+        return res.status(403).json({ data: null });
     }
 
 
@@ -222,10 +222,10 @@ exports.updatePost = async (req, res) => {
     const updatedPost = await postModel.updatePost(postId, updatedData);
 
     if (!updatedPost) {
-        return res.status(404).json({ status: 404, message: 'not_a_single_post', data: null });
+        return res.status(404).json({ data: null });
     }
 
-    return res.status(200).json({ status: 200, message: 'update_post_success', data: { post_id: updatedPost.post_id } });
+    return res.status(200).json({  data: { post_id: updatedPost.post_id } });
     
 };
 //게시글 삭제
@@ -234,28 +234,28 @@ exports.deletePost = async (req, res) => {
         const postId = req.params.post_id;
 
         if (!postId || isNaN(postId)) {
-            return res.status(400).json({ status: 400, message: 'invalid_post_id', data: null });
+            return res.status(400).json({data: null });
         }
 
          // 게시글 소유자 확인
         const post = await postModel.getPostById(postId);
         if (!post) {
-            return res.status(404).json({ status: 404, message: 'cannot_found_post', data: null });
+            return res.status(404).json({ data: null });
         }
 
         if (post.user_id !== req.session.user_id) {
-            return res.status(403).json({ status: 403, message: 'Forbidden', data: null });
+            return res.status(403).json({  data: null });
         }
 
 
         const deleted = await postModel.deletePost(postId);
 
         if (!deleted) {
-            return res.status(404).json({ status: 404, message: 'not_a_single_post', data: null });
+            return res.status(404).json({  data: null });
         }
 
-        return res.status(200).json({ status: 200, message: 'delete_post_success', data: null });
+        return res.status(200).json({  data: null });
     } catch (error) {
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+        return res.status(500).json({  data: null });
     }
 };

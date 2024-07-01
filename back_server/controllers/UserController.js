@@ -326,12 +326,12 @@ exports.signup = async (req, res) => {
         const { email, password, nickname, profileImagePath } = req.body;
 
         if (!email || !password || !nickname) {
-            return res.status(400).json({ status: 400, message: 'missing_required_fields', data: null });
+            return res.status(400).json({  data: null });
         }
 
         const existingUser = await userModel.findUserByEmail(email);
         if (existingUser) {
-            return res.status(400).json({ status: 400, message: 'email_already_exists', data: null });
+            return res.status(400).json({ data: null });
         }
 
         const newUser = {
@@ -347,38 +347,38 @@ exports.signup = async (req, res) => {
             throw new Error('User ID is null');
         }
 
-        return res.status(201).json({ status: 201, message: 'register_success', data: { user_id: createdUser.user_id } });
+        return res.status(201).json({data: { user_id: createdUser.user_id } });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ status: 500, message: 'internal_server_error', data: null });
+        return res.status(500).json({  data: null });
     }
 };
 
 exports.checkEmail = async (req, res) => {
     const email = req.query.email;
     if (!email) {
-        return res.status(400).json({ status: 400, message: 'invalid_email' });
+        return res.status(400);
     }
 
     const user = await userModel.findUserByEmail(email);
     if (user) {
-        return res.status(400).json({ status: 400, message: 'already_exist_email' });
+        return res.status(400);
     } else {
-        return res.status(200).json({ status: 200, message: 'available_email' });
+        return res.status(200);
     }
 };
 
 exports.checkNickname = async (req, res) => {
     const nickname = req.query.nickname;
     if (!nickname) {
-        return res.status(400).json({ status: 400, message: 'invalid_nickname' });
+        return res.status(400);
     }
 
     const user = await userModel.findUserByNick(nickname); 
     if (user) {
-        return res.status(400).json({ status: 400, message: 'already_exist_nickname' });
+        return res.status(400);
     } else {
-        return res.status(200).json({ status: 200, message: 'available_nickname' });
+        return res.status(200);
     }
 };
 
@@ -388,15 +388,15 @@ exports.getUserById = async (req, res) => {
     const user_id = getUserIdFromSession(req);
     
     if (!user_id) {
-        return res.status(400).json({ status: 400, message: 'invalid_user_id' });
+        return res.status(400).json;
     }
 
     const user = await userModel.getUserById(user_id);
 
     if (user) {
-        return res.status(200).json({ status: 200, message: 'success', data: user });
+        return res.status(200);
     } else {
-        return res.status(404).json({ status: 404, message: 'user_not_found' });
+        return res.status(404);
     }
 };
 
@@ -405,7 +405,7 @@ exports.updateUser = async (req, res) => {
     const { nickname } = req.body;
 
     if (!nickname) {
-        return res.status(400).json({ status: 400, message: 'invalid_nickname' });
+        return res.status(400);
     }
 
     const updatedData = { nickname };
@@ -413,9 +413,9 @@ exports.updateUser = async (req, res) => {
     const updatedUser = await userModel.updateUser(user_id, updatedData);
 
     if (updatedUser) {
-        return res.status(200).json({ status: 200, message: 'update_user_data_success', data: updatedUser });
+        return res.status(200).json({ data: updatedUser });
     } else {
-        return res.status(404).json({ status: 404, message: 'user_not_found' });
+        return res.status(404);
     }
 };
 
@@ -424,19 +424,19 @@ exports.changePassword = async (req, res) => {
     const { password: newPassword } = req.body;
 
     if (!newPassword) {
-        return res.status(400).json({ status: 400, message: 'invalid_new_password' });
+        return res.status(400);
     }
 
     const user = await userModel.getUserById(user_id);
     if (!user) {
-        return res.status(404).json({ status: 404, message: 'not_found_user' });
+        return res.status(404);
     }
 
     const updatedUser = await userModel.changePassword(user_id, newPassword);
     if (updatedUser) {
-        return res.status(201).json({ status: 201, message: 'change_user_password_success', data: updatedUser });
+        return res.status(201).json({  data: updatedUser });
     } else {
-        return res.status(500).json({ status: 500, message: 'internal_server_error' });
+        return res.status(500);
     }
 };
 
@@ -444,9 +444,9 @@ exports.deleteUser = async (req, res) => {
     const user_id = getUserIdFromSession(req);
 
     if (!user_id) {
-        return res.status(400).json({ status: 400, message: 'invalid_user_id' });
+        return res.status(400);
     }
 
     await userModel.deleteUser(user_id);
-    return res.status(200).json({ status: 200, message: 'delete_user_success' });
+    return res.status(200);
 };
