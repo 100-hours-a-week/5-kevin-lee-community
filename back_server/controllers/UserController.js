@@ -305,68 +305,82 @@
 // };
 
 const { getUserIdFromSession } = require('../utils/sessionUtils');
+const bcrypt = require('bcrypt');
 const UserModel = require('../models/UserModel');
 const userModel = new UserModel();
 
+
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-    const user = await userModel.loginAuth(email, password);
+    const user = await userModel.findUserByEmail(email); 
 
     if (user) {
-        req.session.user_id = user.user_id; // 세션에 user_id 저장
-        res.cookie('sessionID', req.sessionID, { httpOnly: true, secure: false });
-        res.status(200).send({ message: "login_success", sessionID: req.sessionID });
+        const match = await bcrypt.compare(password, user.password); // 비밀번호 비교
+
+        if (match) {
+            req.session.user_id = user.user_id;
+            res.cookie('sessionID', req.sessionID, { httpOnly: true, secure: false });
+            res.status(200).send({ message: "login_success" });
+        } else {
+            res.status(401).send({ message: "invalid_user" });
+        }
     } else {
         res.status(401).send({ message: "invalid_user" });
     }
 };
 
 exports.signup = async (req, res) => {
-    try {
-        const { email, password, nickname, profileImagePath } = req.body;
+    const { email, password, nickname, profileImagePath } = req.body;
 
-        if (!email || !password || !nickname) {
-            return res.status(400);
-        }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-        const existingUser = await userModel.findUserByEmail(email);
-        if (existingUser) {
-            return res.status(400).json({ data: null });
-        }
-
-        const newUser = {
-            email,
-            password,
-            nickname,
-            profile_image_path: profileImagePath || '/default/path/to/profile.jpg'
-        };
-
-        const createdUser = await userModel.addUser(newUser);
-
-        if (!createdUser.user_id) {
-            throw new Error('User ID is null');
-        }
-
-        return res.status(201).json({data: { user_id: createdUser.user_id } });
-    } catch (error) {
-        console.error(error);
-        return res.status(500);
+    if (!email || !hashedPassword || !nickname) {
+        return res.status(400);
     }
+
+    const existingUser = await userModel.findUserByEmail(email);
+    if (existingUser) {
+        return res.status(400).json({ data: null });
+    }
+
+    const newUser = {
+        email,
+        hashedPassword,
+        nickname,
+        profile_image_path: profileImagePath || '/default/path/to/profile.jpg'
+    };
+
+    const createdUser = await userModel.addUser(newUser);
+
+    if (!createdUser.user_id) {
+        throw new Error('User ID is null');
+    }
+
+    return res.status(201).json({data: { user_id: createdUser.user_id } });
+
 };
 
 exports.checkEmail = async (req, res) => {
     const email = req.query.email;
+    
     if (!email) {
-        return res.status(400);
+        return res.status(400).json({ message: '이메일이 필요합니다.' });
     }
 
-    const user = await userModel.findUserByEmail(email);
-    if (user) {
-        return res.status(400);
-    } else {
-        return res.status(200);
+    try {
+        const user = await userModel.findUserByEmail(email);
+        if (user) {
+            return res.status(400).json({ message: '이미 사용 중인 이메일입니다.' });
+        } else {
+            return res.status(200).json({ message: '사용 가능한 이메일입니다.' });
+        }
+    } catch (error) {
+        console.error('이메일 확인 중 오류 발생:', error);
+        return res.status(500).json({ message: '서버 오류가 발생했습니다.' });
     }
 };
+
 
 exports.checkNickname = async (req, res) => {
     const nickname = req.query.nickname;

@@ -183,7 +183,7 @@ class UserModel {
         const connection = await mysql.createConnection(this.dbConfig);
         const [result] = await connection.execute(
             'INSERT INTO userinfo (email, password, nickname, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())',
-            [newUser.email, newUser.password, newUser.nickname]
+            [newUser.email, newUser.hashedPassword, newUser.nickname]
         );
         await connection.end();
         return { user_id: result.insertId };

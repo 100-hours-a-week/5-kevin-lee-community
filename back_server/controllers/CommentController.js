@@ -26,6 +26,9 @@ exports.addComment = async (req, res) => {
 exports.updateComment = async (req, res) => {
     const { commentId } = req.params;
     const { content } = req.body;
+    if(!commentId){
+        return res.status(400);
+    }
 
     if (!content) {
         return res.status(400);
